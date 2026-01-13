@@ -15,7 +15,7 @@ export const handler = async (event, context) => {
 
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     // 保持使用 gemini-1.5-flash，這是目前最穩定的版本
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     const prompt = `
       你是一位專業、有同理心且講話直白的台灣保險顧問。
