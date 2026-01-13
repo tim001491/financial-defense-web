@@ -927,7 +927,7 @@ const AIChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([
-    { role: 'bot', text: '您好！我是您的 AI 保險規劃助理。請問您想了解哪方面的規劃？或者我可以依據您的狀況給予建議。' }
+    { role: 'bot', text: '您好！我是林昆輝理財保險顧問的 AI 保險規劃助理。把風險交給我們，把財富與安心留給最愛。 讓我依據您的年齡與預算，為您量身打造最合適的防護網。' }
   ]);
   const [step, setStep] = useState('INIT'); // INIT, ASKING_AGE, ASKING_GENDER, ASKING_BUDGET, FINISHED
   const [userData, setUserData] = useState({ age: '', gender: '', budget: '' });
