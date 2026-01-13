@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Shield, PieChart, AlertTriangle, Umbrella, ChevronDown, Phone, Mail, User, Menu, X, ArrowRight, CheckCircle2, MinusCircle,
   Heart, Briefcase, Home, Plane, TrendingUp, Activity, Dog, MapPin, Smartphone, ChevronRight, Stethoscope, Pill, Armchair,
   Coins, PiggyBank, BarChart3, Landmark, Zap, Scale, FileText, Infinity, Wallet, Hourglass, Palmtree,
   Car, Flame, ShieldAlert, Gavel, Globe, Luggage, CreditCard, Watch, Award, Apple, Bone, HeartHandshake, Syringe,
-  TrendingDown, Equal, Scroll, Crown, Users,
-  // 新增 AI 需要的 icon
-  MessageSquare, Send, Bot, Loader2, RefreshCcw 
+  TrendingDown, Equal, Scroll, Crown, Users
 } from 'lucide-react';
 
 // 【重要】請確保您的圖片檔案放在 src/assets/ 資料夾內
@@ -922,199 +920,6 @@ const InheritanceInsuranceDetail = ({ onBack, onContact }) => {
   );
 };
 
-// --- 新增：AI 智能保險顧問視窗 ---
-const AIChatWidget = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [input, setInput] = useState('');
-  const [messages, setMessages] = useState([
-    { role: 'bot', text: '您好！我是您的 AI 保險規劃助理。請問您想了解哪方面的規劃？或者我可以依據您的狀況給予建議。' }
-  ]);
-  const [step, setStep] = useState('INIT'); // INIT, ASKING_AGE, ASKING_GENDER, ASKING_BUDGET, FINISHED
-  const [userData, setUserData] = useState({ age: '', gender: '', budget: '' });
-  const [isTyping, setIsTyping] = useState(false);
-  const messagesEndRef = useRef(null);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages, isOpen]);
-
-  // 模擬 AI 思考與回應
-  const processAIResponse = async (userText) => {
-    setIsTyping(true);
-    
-    // 模擬網路延遲
-    setTimeout(() => {
-      let botResponse = '';
-      let nextStep = step;
-      const text = userText.trim();
-
-      // 簡單的狀態機邏輯
-      if (text.includes('推薦') || text.includes('規劃') || text.includes('建議') || step === 'INIT') {
-        botResponse = '沒問題！為了提供精準的建議，我需要了解您的基本資料。請問您目前的「年齡」是？';
-        nextStep = 'ASKING_AGE';
-      } 
-      else if (step === 'ASKING_AGE') {
-        const age = parseInt(text.replace(/[^0-9]/g, ''));
-        if (!isNaN(age)) {
-          setUserData(prev => ({ ...prev, age }));
-          botResponse = `了解，${age} 歲。請問您的「生理性別」是？(先生/小姐)`;
-          nextStep = 'ASKING_GENDER';
-        } else {
-          botResponse = '不好意思，請輸入數字即可，例如：30。';
-        }
-      }
-      else if (step === 'ASKING_GENDER') {
-        if (text.includes('男') || text.includes('先生')) {
-          setUserData(prev => ({ ...prev, gender: 'male' }));
-          botResponse = '好的。最後請問您每年的「保費預算」大約是多少？(例如：3萬、5萬)';
-          nextStep = 'ASKING_BUDGET';
-        } else if (text.includes('女') || text.includes('小姐')) {
-          setUserData(prev => ({ ...prev, gender: 'female' }));
-          botResponse = '好的。最後請問您每年的「保費預算」大約是多少？(例如：3萬、5萬)';
-          nextStep = 'ASKING_BUDGET';
-        } else {
-          botResponse = '請回答男生或女生，這會影響費率計算喔！';
-        }
-      }
-      else if (step === 'ASKING_BUDGET') {
-        setUserData(prev => ({ ...prev, budget: text }));
-        // 觸發推薦邏輯
-        const recommendation = generateRecommendation(userData.age, userData.gender, text);
-        botResponse = recommendation;
-        nextStep = 'FINISHED';
-      }
-      else if (step === 'FINISHED') {
-        botResponse = '如果您想重新規劃，請輸入「重新開始」。或是點擊下方的諮詢按鈕由專人為您服務。';
-        if (text.includes('重新')) {
-            setStep('INIT');
-            setUserData({ age: '', gender: '', budget: '' });
-            botResponse = '好的，我們重新開始。請問您目前的「年齡」是？';
-            nextStep = 'ASKING_AGE';
-        }
-      }
-
-      setMessages(prev => [...prev, { role: 'bot', text: botResponse }]);
-      setStep(nextStep);
-      setIsTyping(false);
-    }, 1000);
-  };
-
-  // 核心推薦邏輯 (依據年齡層與預算)
-  const generateRecommendation = (age, gender, budget) => {
-    let advice = `根據您 ${age} 歲${gender === 'male' ? '男性' : '女性'}，預算 ${budget} 的條件，我建議的配置如下：\n\n`;
-    
-    if (age < 30) {
-      advice += `🎯 **青年奮鬥期 (高 CP 值防護)**\n`;
-      advice += `1. **意外險**：優先拉高，包含骨折未住院。\n`;
-      advice += `2. **雙實支實付醫療**：解決生病住院的高自費。\n`;
-      advice += `3. **定期壽險**：低保費高保障，對父母負責。\n`;
-      advice += `💡 預算若有限，建議先用「定期險」將保障做足。`;
-    } else if (age >= 30 && age < 50) {
-      advice += `🎯 **家庭責任期 (家庭支柱防護)**\n`;
-      advice += `1. **高額壽險**：覆蓋房貸與子女教育費 (建議參考房貸壽險)。\n`;
-      advice += `2. **重大傷病險**：預防癌症或中風導致收入中斷。\n`;
-      advice += `3. **醫療雙實支**：提升醫療品質，不拖累家人。\n`;
-      advice += `💡 這個階段責任最重，建議檢視「失能險」以防萬一。`;
-    } else {
-      advice += `🎯 **樂齡退休期 (資產保全)**\n`;
-      advice += `1. **年金保險**：創造源源不絕的現金流。\n`;
-      advice += `2. **長照險/失能險**：解決老年照護費用。\n`;
-      advice += `3. **資產傳承**：透過壽險預留稅源，指定分配。\n`;
-      advice += `💡 建議重點放在「不連累子女」與「退休金流」。`;
-    }
-    return advice;
-  };
-
-  const handleSend = () => {
-    if (!input.trim()) return;
-    const userText = input;
-    setMessages(prev => [...prev, { role: 'user', text: userText }]);
-    setInput('');
-    processAIResponse(userText);
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') handleSend();
-  };
-
-  return (
-    <>
-      {/* 浮動按鈕 */}
-      <button 
-        onClick={() => setIsOpen(!isOpen)} 
-        className={`fixed bottom-6 right-6 z-50 p-4 rounded-full shadow-2xl transition-all hover:scale-110 flex items-center gap-2 ${isOpen ? 'bg-gray-800 rotate-90' : 'bg-red-700 animate-bounce'}`}
-      >
-        {isOpen ? <X className="text-white" /> : <Bot className="text-white" size={28} />}
-        {!isOpen && <span className="absolute -top-2 -left-2 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full shadow-sm">AI 諮詢</span>}
-      </button>
-
-      {/* 聊天視窗 */}
-      {isOpen && (
-        <div className="fixed bottom-24 right-6 w-[90vw] md:w-[380px] h-[500px] bg-white rounded-2xl shadow-2xl z-50 flex flex-col border border-gray-200 overflow-hidden animate-fade-in-up">
-          {/* 標題列 */}
-          <div className="bg-gradient-to-r from-red-700 to-red-800 p-4 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="bg-white/20 p-2 rounded-full"><Bot className="text-white" size={20} /></div>
-              <div>
-                <h3 className="font-bold text-white text-sm">AI 智能保險顧問</h3>
-                <p className="text-red-100 text-xs flex items-center gap-1"><span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> 線上服務中</p>
-              </div>
-            </div>
-            <button onClick={() => {setMessages([{role: 'bot', text: '您好！我是您的 AI 保險規劃助理。請問您想了解哪方面的規劃？'}]); setStep('INIT');}} className="text-white/80 hover:text-white" title="重新開始">
-                <RefreshCcw size={18}/>
-            </button>
-          </div>
-
-          {/* 訊息區 */}
-          <div className="flex-1 overflow-y-auto p-4 bg-gray-50 space-y-4">
-            {messages.map((msg, idx) => (
-              <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm shadow-sm leading-relaxed whitespace-pre-wrap ${
-                  msg.role === 'user' 
-                    ? 'bg-red-600 text-white rounded-tr-none' 
-                    : 'bg-white text-gray-700 border border-gray-100 rounded-tl-none'
-                }`}>
-                  {msg.text}
-                </div>
-              </div>
-            ))}
-            {isTyping && (
-              <div className="flex justify-start">
-                <div className="bg-white border border-gray-100 rounded-2xl rounded-tl-none px-4 py-3 shadow-sm">
-                  <Loader2 className="animate-spin text-gray-400" size={16} />
-                </div>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
-
-          {/* 輸入區 */}
-          <div className="p-3 bg-white border-t border-gray-100">
-            <div className="flex items-center gap-2 bg-gray-100 rounded-full px-4 py-2">
-              <input 
-                type="text" 
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder="輸入訊息..."
-                className="flex-1 bg-transparent outline-none text-sm text-gray-700"
-              />
-              <button onClick={handleSend} className={`p-2 rounded-full transition-colors ${input.trim() ? 'text-red-600 hover:bg-red-100' : 'text-gray-400'}`}>
-                <Send size={18} />
-              </button>
-            </div>
-            <p className="text-center text-[10px] text-gray-400 mt-2">AI 建議僅供參考，實際規劃請諮詢專業顧問。</p>
-          </div>
-        </div>
-      )}
-    </>
-  );
-};
-
 // --- 主元件 ---
 const FinancialDefensePage = () => {
   const [showDetail, setShowDetail] = useState(null); // 'life' | 'medical' | 'savings' | 'investment' | 'annuity' | 'property' | 'travel' | 'spillover' | 'pet' | 'mortgage' | 'inheritance' | null
@@ -1375,12 +1180,11 @@ const FinancialDefensePage = () => {
         </div>
       </section>
 
+      {/* --- Contact Section Removed as Requested --- */}
+
       <footer className="bg-white border-t border-gray-100 py-8">
          <div className="container mx-auto px-6 text-center text-sm text-gray-500"><p className="mb-2">本網站內容僅供保險觀念推廣與教育用途，詳細商品內容與理賠條件請以各保險公司正式保單條款為準。</p><p>Financial Defense Blueprint · Designed for Insurance Professionals</p></div>
       </footer>
-
-      {/* --- 在這裡加入 AI 視窗 --- */}
-      <AIChatWidget />
 
       {showContactModal && (
         <div className="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
