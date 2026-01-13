@@ -21,7 +21,7 @@ export const handler = async (event, context) => {
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const prompt = `
-      你是一位專業、有同理心且講話直白的台灣保險顧問。
+      你是一位專業、有同理心且講話直白的台灣保險顧問
       客戶資料如下：
       - 性別：${gender === 'male' ? '男' : '女'}
       - 年齡：${age} 歲
