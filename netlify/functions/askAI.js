@@ -9,7 +9,7 @@ export const handler = async (event, context) => {
     const { gender, age, job, budget, other } = JSON.parse(event.body);
 
     if (!process.env.GEMINI_API_KEY) {
-      console.error("Error: GEMINI_API_KEY is missing.");
+      console.error("Error:GEMINI_API_KEY is missing.");
       throw new Error("Missing API Key");
     }
 
