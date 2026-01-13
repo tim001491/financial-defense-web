@@ -9,6 +9,9 @@ import {
   MessageSquare, Send, Bot, Loader2, RefreshCcw 
 } from 'lucide-react';
 
+// 引入 Google Generative AI SDK
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
 // 【重要】請確保您的圖片檔案放在 src/assets/ 資料夾內
 import lineQrCode from './assets/my_qrcode_1768092146213.jpg';
 
@@ -57,9 +60,9 @@ const LifeInsuranceDetail = ({ onBack, onContact }) => {
       </section>
       <section className="py-20 px-6">
         <div className="container mx-auto max-w-3xl text-center">
-           <h2 className="text-3xl font-bold text-gray-900 mb-6">不確定自己需要多少額度？</h2>
-           <p className="text-gray-600 mb-8 text-lg">根據雙十原則，建議保額為年收入的 10 倍，或是足以覆蓋剩餘房貸與小孩教育費的總和。<br/>讓我協助您試算最適合的保障方案。</p>
-           <button onClick={onContact} className="bg-red-700 hover:bg-red-800 text-white px-10 py-4 rounded-xl text-lg font-bold shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all flex items-center justify-center gap-2 mx-auto"><Phone size={20} /> 免費預約保單試算</button>
+            <h2 className="text-3xl font-bold text-gray-900 mb-6">不確定自己需要多少額度？</h2>
+            <p className="text-gray-600 mb-8 text-lg">根據雙十原則，建議保額為年收入的 10 倍，或是足以覆蓋剩餘房貸與小孩教育費的總和。<br/>讓我協助您試算最適合的保障方案。</p>
+            <button onClick={onContact} className="bg-red-700 hover:bg-red-800 text-white px-10 py-4 rounded-xl text-lg font-bold shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all flex items-center justify-center gap-2 mx-auto"><Phone size={20} /> 免費預約保單試算</button>
         </div>
       </section>
     </div>
@@ -850,7 +853,7 @@ const InheritanceInsuranceDetail = ({ onBack, onContact }) => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-stone-100 font-sans text-stone-800 animate-fade-in-up">
-      <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-stone-300 px-6 py-4 flex justify-between items-center">
+      <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-stone-300 px-6 py-4 flex justify-between items-center">
         <button onClick={onBack} className="flex items-center gap-2 text-stone-600 hover:text-stone-900 transition-colors font-medium"><ArrowRight className="rotate-180" size={20} /> 返回總覽</button>
         <span className="font-bold text-stone-900">資產傳承詳情</span>
         <button onClick={onContact} className="bg-stone-800 hover:bg-stone-900 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-md transition-all">立即諮詢</button>
@@ -922,17 +925,42 @@ const InheritanceInsuranceDetail = ({ onBack, onContact }) => {
   );
 };
 
-// --- 新增：AI 智能保險顧問視窗 ---
+// --- 新增：真實串接 Gemini 的 AI 智能保險顧問視窗 ---
 const AIChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([
-    { role: 'bot', text: '您好！我是林昆輝理財保險顧問的 AI 保險規劃助理。把風險交給我們，把財富與安心留給最愛。 讓我依據您的年齡與預算，為您量身打造最合適的防護網。' }
+    { 
+      role: 'assistant', 
+      content: '您好！我是林昆輝理財保險顧問的 AI 保險規劃助理。守護您辛苦打拼的資產，預約富足安心的未來。 讓我依據您的年齡與預算，為您量身打造最合適的防護網。' 
+    }
   ]);
-  const [step, setStep] = useState('INIT'); // INIT, ASKING_AGE, ASKING_GENDER, ASKING_BUDGET, FINISHED
-  const [userData, setUserData] = useState({ age: '', gender: '', budget: '' });
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
+
+  // 讀取環境變數 (Vite 專案需以 VITE_ 開頭)
+  const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+
+  // 【核心靈魂】System Prompt
+  const SYSTEM_PROMPT = `
+    你是一位專業、溫暖且理性的「財務防禦規劃師（林昆輝顧問）」的 AI 助理。
+     
+    【你的核心理念】
+    1. 保險不是為了改變生活，而是防止生活被改變。
+    2. 強調「先保大、再保小」：優先處理無法承擔的巨大風險（如死亡、殘廢、癌症）。
+    3. 堅持「631法則」：60%生活、30%儲蓄、10%風險規劃。
+    4. 堅持「雙十原則」：保額是年收入10倍，保費是年收入1/10。
+
+    【你的回答風格】
+    1. 語氣溫暖、同理心，但邏輯清晰。
+    2. 不要一次講太多長篇大論，要引導客戶說出需求。
+    3. 當客戶提到「預算」時，請務必幫他計算是否符合 631 法則。
+    4. 當客戶提到「家庭責任」時（如小孩、房貸），請強調壽險與失能險的重要性。
+    5. 不要給予醫療診斷，只針對「財務風險轉嫁」提供建議。
+     
+    【你的任務】
+    根據使用者的年齡、性別、家庭狀況與預算，提供具體的險種配置建議（如：實支實付、定期壽險、重大傷病等），並解釋「為什麼」這樣配。
+  `;
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -942,103 +970,71 @@ const AIChatWidget = () => {
     scrollToBottom();
   }, [messages, isOpen]);
 
-  // 模擬 AI 思考與回應
-  const processAIResponse = async (userText) => {
+  // 呼叫 Gemini API
+  const callGemini = async (userMessage, history) => {
     setIsTyping(true);
     
-    // 模擬網路延遲
-    setTimeout(() => {
-      let botResponse = '';
-      let nextStep = step;
-      const text = userText.trim();
-
-      // 簡單的狀態機邏輯
-      if (text.includes('推薦') || text.includes('規劃') || text.includes('建議') || step === 'INIT') {
-        botResponse = '沒問題！為了提供精準的建議，我需要了解您的基本資料。請問您目前的「年齡」是？';
-        nextStep = 'ASKING_AGE';
-      } 
-      else if (step === 'ASKING_AGE') {
-        const age = parseInt(text.replace(/[^0-9]/g, ''));
-        if (!isNaN(age)) {
-          setUserData(prev => ({ ...prev, age }));
-          botResponse = `了解，${age} 歲。請問您的「生理性別」是？(先生/小姐)`;
-          nextStep = 'ASKING_GENDER';
-        } else {
-          botResponse = '不好意思，請輸入數字即可，例如：30。';
-        }
-      }
-      else if (step === 'ASKING_GENDER') {
-        if (text.includes('男') || text.includes('先生')) {
-          setUserData(prev => ({ ...prev, gender: 'male' }));
-          botResponse = '好的。最後請問您每年的「保費預算」大約是多少？(例如：3萬、5萬)';
-          nextStep = 'ASKING_BUDGET';
-        } else if (text.includes('女') || text.includes('小姐')) {
-          setUserData(prev => ({ ...prev, gender: 'female' }));
-          botResponse = '好的。最後請問您每年的「保費預算」大約是多少？(例如：3萬、5萬)';
-          nextStep = 'ASKING_BUDGET';
-        } else {
-          botResponse = '請回答男生或女生，這會影響費率計算喔！';
-        }
-      }
-      else if (step === 'ASKING_BUDGET') {
-        setUserData(prev => ({ ...prev, budget: text }));
-        // 觸發推薦邏輯
-        const recommendation = generateRecommendation(userData.age, userData.gender, text);
-        botResponse = recommendation;
-        nextStep = 'FINISHED';
-      }
-      else if (step === 'FINISHED') {
-        botResponse = '如果您想重新規劃，請輸入「重新開始」。或是點擊下方的諮詢按鈕由專人為您服務。';
-        if (text.includes('重新')) {
-            setStep('INIT');
-            setUserData({ age: '', gender: '', budget: '' });
-            botResponse = '好的，我們重新開始。請問您目前的「年齡」是？';
-            nextStep = 'ASKING_AGE';
-        }
+    try {
+      if (!API_KEY) {
+        throw new Error("找不到 API Key，請檢查 .env 檔案是否設定 VITE_GEMINI_API_KEY");
       }
 
-      setMessages(prev => [...prev, { role: 'bot', text: botResponse }]);
-      setStep(nextStep);
+      // 1. 初始化 Google AI Client
+      const genAI = new GoogleGenerativeAI(API_KEY);
+      
+      // 2. 取得模型
+      const model = genAI.getGenerativeModel({ 
+        model: "gemini-1.5-flash",
+        systemInstruction: SYSTEM_PROMPT 
+      });
+
+      // 3. 轉換歷史訊息格式
+      const formattedHistory = history.slice(0, -1).map(msg => ({
+        role: msg.role === 'assistant' ? 'model' : 'user',
+        parts: [{ text: msg.content }]
+      }));
+
+      // 4. 啟動聊天模式
+      const chat = model.startChat({
+        history: formattedHistory,
+        generationConfig: {
+          maxOutputTokens: 500,
+          temperature: 0.7,
+        },
+      });
+
+      // 5. 發送使用者訊息
+      const result = await chat.sendMessage(userMessage);
+      const response = await result.response;
+      const botReply = response.text();
+      
+      setMessages(prev => [...prev, { role: 'assistant', content: botReply }]);
+
+    } catch (error) {
+      console.error("Gemini AI Error:", error);
+      setMessages(prev => [...prev, { role: 'assistant', content: '不好意思，目前系統連線忙碌中，請稍後再試，或是直接點擊上方按鈕預約林昆輝顧問諮詢。' }]);
+    } finally {
       setIsTyping(false);
-    }, 1000);
-  };
-
-  // 核心推薦邏輯 (依據年齡層與預算)
-  const generateRecommendation = (age, gender, budget) => {
-    let advice = `根據您 ${age} 歲${gender === 'male' ? '男性' : '女性'}，預算 ${budget} 的條件，我建議的配置如下：\n\n`;
-    
-    if (age < 30) {
-      advice += `🎯 **青年奮鬥期 (高 CP 值防護)**\n`;
-      advice += `1. **意外險**：優先拉高，包含骨折未住院。\n`;
-      advice += `2. **雙實支實付醫療**：解決生病住院的高自費。\n`;
-      advice += `3. **定期壽險**：低保費高保障，對父母負責。\n`;
-      advice += `💡 預算若有限，建議先用「定期險」將保障做足。`;
-    } else if (age >= 30 && age < 50) {
-      advice += `🎯 **家庭責任期 (家庭支柱防護)**\n`;
-      advice += `1. **高額壽險**：覆蓋房貸與子女教育費 (建議參考房貸壽險)。\n`;
-      advice += `2. **重大傷病險**：預防癌症或中風導致收入中斷。\n`;
-      advice += `3. **醫療雙實支**：提升醫療品質，不拖累家人。\n`;
-      advice += `💡 這個階段責任最重，建議檢視「失能險」以防萬一。`;
-    } else {
-      advice += `🎯 **樂齡退休期 (資產保全)**\n`;
-      advice += `1. **年金保險**：創造源源不絕的現金流。\n`;
-      advice += `2. **長照險/失能險**：解決老年照護費用。\n`;
-      advice += `3. **資產傳承**：透過壽險預留稅源，指定分配。\n`;
-      advice += `💡 建議重點放在「不連累子女」與「退休金流」。`;
     }
-    return advice;
   };
 
   const handleSend = () => {
-    if (!input.trim()) return;
+    if (!input.trim() || isTyping) return;
     const userText = input;
-    setMessages(prev => [...prev, { role: 'user', text: userText }]);
+    
+    const newHistory = [...messages, { role: 'user', content: userText }];
+    setMessages(newHistory);
     setInput('');
-    processAIResponse(userText);
+
+    callGemini(userText, newHistory);
   };
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') handleSend();
+  };
+
+  const handleReset = () => {
+     setMessages([{ role: 'assistant', content: '您好！我是林昆輝理財保險顧問的 AI 保險規劃助理。守護您辛苦打拼的資產，預約富足安心的未來。 讓我依據您的年齡與預算，為您量身打造最合適的防護網。' }]);
   };
 
   return (
@@ -1061,11 +1057,11 @@ const AIChatWidget = () => {
               <div className="bg-white/20 p-2 rounded-full"><Bot className="text-white" size={20} /></div>
               <div>
                 <h3 className="font-bold text-white text-sm">AI 智能保險顧問</h3>
-                <p className="text-red-100 text-xs flex items-center gap-1"><span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> 線上服務中</p>
+                <p className="text-red-100 text-xs flex items-center gap-1"><span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> Gemini AI 連線中</p>
               </div>
             </div>
-            <button onClick={() => {setMessages([{role: 'bot', text: '您好！我是您的 AI 保險規劃助理。請問您想了解哪方面的規劃？'}]); setStep('INIT');}} className="text-white/80 hover:text-white" title="重新開始">
-                <RefreshCcw size={18}/>
+            <button onClick={handleReset} className="text-white/80 hover:text-white" title="重新開始">
+               <RefreshCcw size={18}/>
             </button>
           </div>
 
@@ -1073,19 +1069,20 @@ const AIChatWidget = () => {
           <div className="flex-1 overflow-y-auto p-4 bg-gray-50 space-y-4">
             {messages.map((msg, idx) => (
               <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm shadow-sm leading-relaxed whitespace-pre-wrap ${
+                <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm shadow-sm leading-relaxed whitespace-pre-wrap ${
                   msg.role === 'user' 
                     ? 'bg-red-600 text-white rounded-tr-none' 
                     : 'bg-white text-gray-700 border border-gray-100 rounded-tl-none'
                 }`}>
-                  {msg.text}
+                  {msg.content}
                 </div>
               </div>
             ))}
             {isTyping && (
               <div className="flex justify-start">
-                <div className="bg-white border border-gray-100 rounded-2xl rounded-tl-none px-4 py-3 shadow-sm">
-                  <Loader2 className="animate-spin text-gray-400" size={16} />
+                <div className="bg-white border border-gray-100 rounded-2xl rounded-tl-none px-4 py-3 shadow-sm flex items-center gap-2">
+                  <span className="text-xs text-gray-400">顧問助理正在思考...</span>
+                  <Loader2 className="animate-spin text-red-600" size={14} />
                 </div>
               </div>
             )}
@@ -1100,7 +1097,7 @@ const AIChatWidget = () => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="輸入訊息..."
+                placeholder="請輸入您的需求..."
                 className="flex-1 bg-transparent outline-none text-sm text-gray-700"
               />
               <button onClick={handleSend} className={`p-2 rounded-full transition-colors ${input.trim() ? 'text-red-600 hover:bg-red-100' : 'text-gray-400'}`}>
@@ -1117,7 +1114,7 @@ const AIChatWidget = () => {
 
 // --- 主元件 ---
 const FinancialDefensePage = () => {
-  const [showDetail, setShowDetail] = useState(null); // 'life' | 'medical' | 'savings' | 'investment' | 'annuity' | 'property' | 'travel' | 'spillover' | 'pet' | 'mortgage' | 'inheritance' | null
+  const [showDetail, setShowDetail] = useState(null); 
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState('all');
