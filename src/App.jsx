@@ -170,10 +170,74 @@ const AIConsultantSection = ({ onContact }) => {
   );
 };
 
-// --- 以下為各詳情頁元件 (通用模板) ---
+// --- 精選案例區塊 (靜態話術) ---
+const SALES_SCRIPTS_DATA = [
+  {
+    id: 1, title: "50歲服務業 / 預算2萬", tag: "高CP值戰術",
+    content: {
+      opening: "大哥，依您 50 歲這個年紀，加上在服務業打拚，身體健康就是最大的本錢。2 萬元的預算在 50 歲這個階段，說實話是比較緊繃的...",
+      strategy: [
+        { title: "第一道防線：產險意外險", desc: "把意外保障做高。服務業在外難免有磕磕碰碰，這個一年只要三千多，如果不小心受傷，保險公司賠給您的錢可以彌補薪水損失。" },
+        { title: "第二道防線：實支實付醫療", desc: "把剩下的錢集中在這裡。隨便一個微創手術都要好幾萬。萬一需要住院動刀，直接由保險公司買單。" }
+      ],
+      closing: "這份規劃雖然沒有花俏的功能，但在 2 萬元的預算內，它是防禦力最強的組合。大哥您覺得我們先把這兩塊最基本的防護網架起來，如何？"
+    }
+  }
+];
+
+const CaseStudySection = () => {
+  return (
+    <section className="py-20 bg-slate-50 border-t border-slate-200">
+      <div className="container mx-auto px-6 max-w-5xl">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">精選規劃案例</h2>
+          <div className="w-24 h-1 bg-blue-600 mx-auto rounded-full mb-6"></div>
+          <p className="text-gray-600">針對不同預算與年齡層的真實規劃建議，<br/>讓您參考如何把錢花在刀口上。</p>
+        </div>
+        <div className="grid gap-8">
+          {SALES_SCRIPTS_DATA.map((item) => (
+            <div key={item.id} className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden hover:shadow-xl transition-shadow">
+              <div className="bg-slate-800 text-white p-6 flex justify-between items-center">
+                <div className="flex items-center gap-3">
+                  <div className="bg-blue-500 p-2 rounded-lg"><User size={24} /></div>
+                  <div><h3 className="text-xl font-bold">{item.title}</h3><span className="text-slate-300 text-sm">財務防禦策略</span></div>
+                </div>
+                <span className="bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full">{item.tag}</span>
+              </div>
+              <div className="p-8 space-y-8">
+                <div className="relative pl-6 border-l-4 border-yellow-400">
+                  <h4 className="text-lg font-bold text-gray-900 mb-2">💡 開場：同理心與現實面</h4>
+                  <p className="text-gray-600 leading-relaxed bg-yellow-50 p-4 rounded-lg italic">「{item.content.opening}」</p>
+                </div>
+                <div>
+                  <h4 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2"><Shield size={20} className="text-blue-600"/> 切入方案：雙軌防護</h4>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    {item.content.strategy.map((strat, idx) => (
+                      <div key={idx} className="bg-blue-50 p-5 rounded-xl border border-blue-100">
+                        <h5 className="font-bold text-blue-800 mb-2 flex items-center gap-2"><span className="bg-blue-200 text-blue-800 w-6 h-6 rounded-full flex items-center justify-center text-xs">{idx + 1}</span>{strat.title}</h5>
+                        <p className="text-gray-700 text-sm leading-relaxed">{strat.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="relative pl-6 border-l-4 border-green-500">
+                  <h4 className="text-lg font-bold text-gray-900 mb-2">🤝 結尾：建立信心</h4>
+                  <p className="text-gray-700 leading-relaxed font-medium">「{item.content.closing}」</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// --- 以下為各詳情頁元件 (為節省篇幅，內容保持不變，與先前版本相同) ---
+// (這些元件是您的 11 個保險介紹頁面，請確保不要刪除它們。如果您複製貼上時發現不見了，可以把這段內容替換成您原本的詳情頁程式碼)
 const LifeInsuranceDetail = ({ onBack, onContact }) => { useEffect(() => { window.scrollTo(0, 0); }, []); return (<div className="min-h-screen bg-stone-50 p-6 flex flex-col items-center justify-center"><h1 className="text-3xl font-bold mb-4 text-red-700">人壽保險詳情</h1><p className="mb-6 text-gray-600">留愛不留債，給家人的承諾。</p><button onClick={onBack} className="bg-gray-200 px-4 py-2 rounded mb-2">返回</button><button onClick={onContact} className="bg-red-700 text-white px-4 py-2 rounded">預約諮詢</button></div>); };
 const MedicalInsuranceDetail = ({ onBack, onContact }) => { useEffect(() => { window.scrollTo(0, 0); }, []); return (<div className="min-h-screen bg-emerald-50 p-6 flex flex-col items-center justify-center"><h1 className="text-3xl font-bold mb-4 text-emerald-700">醫療保險詳情</h1><p className="mb-6 text-gray-600">雙實支實付，解決高額自費。</p><button onClick={onBack} className="bg-gray-200 px-4 py-2 rounded mb-2">返回</button><button onClick={onContact} className="bg-emerald-600 text-white px-4 py-2 rounded">預約諮詢</button></div>); };
-
+// ... (為確保程式碼能直接執行，我將其餘詳情頁簡化為通用模板，實際使用時請保留您原本豐富的內容) ...
 const CommonDetail = ({ title, color, desc, onBack, onContact }) => { useEffect(() => { window.scrollTo(0, 0); }, []); return (<div className={`min-h-screen bg-${color}-50 p-6 flex flex-col items-center justify-center`}><h1 className={`text-3xl font-bold mb-4 text-${color}-700`}>{title}</h1><p className="mb-6 text-gray-600">{desc}</p><button onClick={onBack} className="bg-gray-200 px-4 py-2 rounded mb-2">返回</button><button onClick={onContact} className={`bg-${color}-600 text-white px-4 py-2 rounded`}>預約諮詢</button></div>); };
 const SavingsInsuranceDetail = (props) => <CommonDetail title="儲蓄理財" color="amber" desc="時間複利的魔法" {...props} />;
 const InvestmentInsuranceDetail = (props) => <CommonDetail title="投資型保險" color="indigo" desc="保障投資雙效合一" {...props} />;
@@ -237,6 +301,7 @@ const FinancialDefensePage = () => {
 
   if (showDetail) {
     const Details = [LifeInsuranceDetail, MedicalInsuranceDetail, SavingsInsuranceDetail, InvestmentInsuranceDetail, AnnuityInsuranceDetail, PropertyInsuranceDetail, TravelInsuranceDetail, SpilloverInsuranceDetail, PetInsuranceDetail, MortgageInsuranceDetail, InheritanceInsuranceDetail];
+    const Component = Details[showDetail === 'life' ? 0 : showDetail === 'medical' ? 1 : showDetail === 'savings' ? 2 : showDetail === 'investment' ? 3 : showDetail === 'annuity' ? 4 : showDetail === 'property' ? 5 : showDetail === 'travel' ? 6 : showDetail === 'spillover' ? 7 : showDetail === 'pet' ? 8 : showDetail === 'mortgage' ? 9 : 10];
     // 簡單的路由對應修正
     const detailMap = {life:0, medical:1, savings:2, investment:3, annuity:4, property:5, travel:6, spillover:7, pet:8, mortgage:9, inheritance:10};
     const DetailComponent = Details[detailMap[showDetail]];
@@ -305,10 +370,11 @@ const FinancialDefensePage = () => {
         </div>
       </section>
 
-      {/* 🔥 真實 AI 區塊 (已保留) */}
+      {/* 🔥 真實 AI 區塊放在這裡 */}
       <AIConsultantSection onContact={toggleContactModal} />
 
-      {/* ⚠️ 注意：精選案例區塊已被移除 */}
+      {/* 靜態話術區塊 */}
+      <CaseStudySection />
 
       <footer className="bg-white border-t border-gray-100 py-8 text-center text-sm text-gray-500">
          <p>Financial Defense Blueprint</p>
