@@ -1387,7 +1387,7 @@ const FinancialDefensePage = () => {
           <div className="bg-white rounded-2xl max-w-sm w-full p-6 relative shadow-2xl animate-fade-in-up border-t-8 border-green-500">
             <button onClick={toggleContactModal} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors bg-gray-100 rounded-full p-1"><X className="w-6 h-6" /></button>
             <div className="text-center pt-2">
-              <h3 className="text-xl font-bold text-gray-900 mb-1">加入我的 LINE</h3><p className="text-gray-500 text-sm mb-6">掃描下方行動條碼，即時諮詢保險規劃</p>
+              <h3 className="text-xl font-bold text-gray-900 mb-1">加入我的 LINE</h3><p className="text-gray-500 text-sm mb-6">掃描下方行動條碼，很高興能夠為您服務</p>
               <div className="bg-white p-2 rounded-xl border-2 border-green-100 inline-block mb-4 shadow-sm"><img src={lineQrCode} alt="LINE QR Code" className="w-48 h-48 object-contain rounded-lg"/></div>
               <div className="bg-gray-50 rounded-lg py-2 px-4 mb-6 inline-block"><p className="text-gray-600 text-sm font-medium">LINE ID: <span className="text-green-600 font-bold text-lg select-all">{agentProfile.lineId}</span></p></div>
               <div className="space-y-3"><p className="text-xs text-gray-400">手機用戶可直接截圖此畫面，<br/>並在 LINE 加入好友中選擇「行動條碼」讀取</p><button onClick={toggleContactModal} className="w-full inline-flex justify-center rounded-xl bg-green-500 text-white font-bold py-3 hover:bg-green-600 transition-colors shadow-lg shadow-green-500/30">好的，我已掃描</button></div>
