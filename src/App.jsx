@@ -944,7 +944,7 @@ const AIChatWidget = () => {
   // 【核心靈魂】System Prompt
   const SYSTEM_PROMPT = `
     你是一位專業、溫暖且理性的「財務防禦規劃師（林昆輝顧問）」的 AI 助理。
-      
+     
     【你的核心理念】
     1. 保險不是為了改變生活，而是防止生活被改變。
     2. 強調「先保大、再保小」：優先處理無法承擔的巨大風險（如死亡、殘廢、癌症）。
@@ -957,7 +957,7 @@ const AIChatWidget = () => {
     3. 當客戶提到「預算」時，請務必幫他計算是否符合 631 法則。
     4. 當客戶提到「家庭責任」時（如小孩、房貸），請強調壽險與失能險的重要性。
     5. 不要給予醫療診斷，只針對「財務風險轉嫁」提供建議。
-      
+     
     【你的任務】
     根據使用者的年齡、性別、家庭狀況與預算，提供具體的險種配置建議（如：實支實付、定期壽險、重大傷病等），並解釋「為什麼」這樣配。
   `;
@@ -973,7 +973,7 @@ const AIChatWidget = () => {
   // 呼叫 Gemini API
   const callGemini = async (userMessage, history) => {
     setIsTyping(true);
-     
+    
     try {
       if (!API_KEY) {
         throw new Error("找不到 API Key，請檢查 .env 檔案是否設定 VITE_GEMINI_API_KEY");
@@ -1024,7 +1024,7 @@ const AIChatWidget = () => {
   const handleSend = () => {
     if (!input.trim() || isTyping) return;
     const userText = input;
-     
+    
     const newHistory = [...messages, { role: 'user', content: userText }];
     setMessages(newHistory);
     setInput('');
@@ -1206,28 +1206,10 @@ const FinancialDefensePage = () => {
     <div className="font-sans text-gray-700 bg-stone-50 min-h-screen selection:bg-red-100 selection:text-red-800">
       <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-5'}`}>
         <div className="container mx-auto px-6 flex justify-between items-center">
-          
-          {/* --- 修改開始：Logo 區塊 (大盾牌 + 大 QR Code) --- */}
-          <div className="flex items-center gap-3 cursor-pointer group select-none" onClick={toggleContactModal} title="點擊掃描 QR Code 加入好友">
-            
-            {/* 1. 紅色盾牌圖示 (放大版) */}
-            <div className="bg-red-700 p-2.5 rounded-xl text-white shadow-md group-hover:scale-110 group-hover:bg-red-600 transition-all duration-300">
-              <Shield size={28} fill="currentColor" />
-            </div>
-
-            {/* 2. QR Code 縮圖 (新增且放大) */}
-            <div className="w-12 h-12 bg-white rounded-xl overflow-hidden border-[3px] border-white shadow-md group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10">
-              <img src={lineQrCode} alt="LINE QR Code" className="w-full h-full object-cover" />
-            </div>
-            
-            {/* 3. 文字標題 (字體放大) */}
-            <span className={`text-2xl font-bold tracking-wide ml-1 transition-colors duration-300 ${isScrolled ? 'text-gray-900' : 'text-gray-900 md:text-white md:text-shadow'}`}>
-              {agentProfile.name} <span className="font-light">財務防禦</span>
-            </span>
-
+          <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <div className="bg-red-700 p-2 rounded-lg text-white"><Shield size={24} fill="currentColor" /></div>
+            <span className={`text-xl font-bold tracking-wide ${isScrolled ? 'text-gray-800' : 'text-gray-800 md:text-white'}`}>{agentProfile.name} <span className="font-light">財務防禦</span></span>
           </div>
-          {/* --- 修改結束 --- */}
-
           <div className="hidden md:flex items-center gap-8">
             <button onClick={() => scrollToSection('philosophy')} className={`font-medium hover:text-red-600 transition-colors ${isScrolled ? 'text-gray-600' : 'text-white/90'}`}>核心原則</button>
             <button onClick={() => scrollToSection('priorities')} className={`font-medium hover:text-red-600 transition-colors ${isScrolled ? 'text-gray-600' : 'text-white/90'}`}>防護順序</button>
@@ -1258,7 +1240,7 @@ const FinancialDefensePage = () => {
             <p className="text-lg md:text-xl text-gray-600 mb-10 leading-relaxed max-w-2xl mx-auto">{agentProfile.slogan}<br className="hidden md:block"/>透過理性的預算分配，讓我們一起守護您最珍視的家。</p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <button onClick={toggleContactModal} className="bg-gray-900 hover:bg-black text-white px-8 py-4 rounded-xl font-medium text-lg transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1 flex items-center justify-center gap-2">啟動防禦計畫 <ArrowRight size={20} /></button>
-              <button onClick={() => scrollToSection('portfolio')} className="bg-white hover:bg-red-50 text-gray-700 border border-gray-200 px-8 py-4 rounded-xl font-medium text-lg transition-all hover:border-red-300 flex items-center justify-center gap-2">探索保險工具</button>
+              <button onClick={() => scrollToSection('portfolio')} className="bg-white hover:bg-red-50 text-gray-700 border border-gray-200 px-8 py-4 rounded-xl font-medium text-lg transition-all hover:border-red-300 flex items-center justify-center gap-2">瀏覽保險商品</button>
             </div>
           </div>
         </div>
