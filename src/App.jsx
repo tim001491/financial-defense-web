@@ -988,11 +988,14 @@ const AIChatWidget = () => {
         systemInstruction: SYSTEM_PROMPT 
       });
 
-      // 3. 轉換歷史訊息格式
-      const formattedHistory = history.slice(0, -1).map(msg => ({
-        role: msg.role === 'assistant' ? 'model' : 'user',
-        parts: [{ text: msg.content }]
-      }));
+      // 3. 轉換歷史訊息格式 (OpenAI -> Gemini 格式)
+      // 【修正關鍵】Gemini 規定歷史紀錄第一筆不能是 AI (model)，所以我們過濾掉第一則歡迎詞
+      const formattedHistory = history.slice(0, -1)
+        .filter((msg, index) => !(index === 0 && msg.role === 'assistant'))
+        .map(msg => ({
+          role: msg.role === 'assistant' ? 'model' : 'user',
+          parts: [{ text: msg.content }]
+        }));
 
       // 4. 啟動聊天模式
       const chat = model.startChat({
