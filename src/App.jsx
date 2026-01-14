@@ -932,7 +932,7 @@ const AIChatWidget = () => {
   const [messages, setMessages] = useState([
     { 
       role: 'assistant', 
-      content: '您好！我是林昆輝理財保險顧問的 AI 保險規劃助理。守護您辛苦打拼的資產，預約富足安心的未來。 讓我依據您的年齡與預算，為您量身打造最合適的防護網。' 
+      content: '您好！我是林昆輝理財保險顧問的 AI 助理。 守護您辛苦累積的資產，是為了讓未來的生活更有溫度。☀️無論是安享退休或照顧摯愛，讓我依據您的需求，透過專業理財為您打造最安心的依靠。' 
     }
   ]);
   const [isTyping, setIsTyping] = useState(false);
