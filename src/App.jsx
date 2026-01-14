@@ -1125,13 +1125,13 @@ const FinancialDefensePage = () => {
 
   // 模擬顧問個人資料
   const agentProfile = {
-    name: "王大明", 
-    title: "財務防禦規劃師",
+    name: "林昆輝", 
+    title: "理財保險規劃師",
     slogan: "保險不是為了改變生活，而是為了防止生活被改變。",
-    phone: "0912-345-678",
-    lineId: "agent.wang", 
-    email: "wang.insurance@example.com",
-    location: "台北市信義區 (全台服務)"
+    phone: "0975-550-652",
+    lineId: "flytim", 
+    email: "001491tim@gmail.com",
+    location: "(全台服務)"
   };
 
   // 保險資料結構
