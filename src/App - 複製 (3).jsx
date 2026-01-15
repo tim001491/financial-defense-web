@@ -1245,8 +1245,8 @@ const FinancialDefensePage = () => {
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-8 tracking-tight">保險不是為了改變生活<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-red-700 to-orange-700">而是為了防止生活被改變</span></h1>
             <p className="text-lg md:text-xl text-gray-600 mb-10 leading-relaxed max-w-2xl mx-auto">{agentProfile.slogan}<br className="hidden md:block"/>透過理性的預算分配，讓我們一起守護您最珍視的家。</p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <button onClick={toggleContactModal} className="bg-gray-900 hover:bg-black text-white px-8 py-4 rounded-xl font-medium text-lg transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1 flex items-center justify-center gap-2">免費諮商 <ArrowRight size={20} /></button>
-              <button onClick={() => scrollToSection('portfolio')} className="bg-white hover:bg-red-50 text-gray-700 border border-gray-200 px-8 py-4 rounded-xl font-medium text-lg transition-all hover:border-red-300 flex items-center justify-center gap-2">瀏覽保險種類</button>
+              <button onClick={toggleContactModal} className="bg-gray-900 hover:bg-black text-white px-8 py-4 rounded-xl font-medium text-lg transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1 flex items-center justify-center gap-2">啟動防禦計畫 <ArrowRight size={20} /></button>
+              <button onClick={() => scrollToSection('portfolio')} className="bg-white hover:bg-red-50 text-gray-700 border border-gray-200 px-8 py-4 rounded-xl font-medium text-lg transition-all hover:border-red-300 flex items-center justify-center gap-2">瀏覽保險商品</button>
             </div>
           </div>
         </div>
