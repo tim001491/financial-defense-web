@@ -932,7 +932,7 @@ const AIChatWidget = () => {
   const [messages, setMessages] = useState([
     { 
       role: 'assistant', 
-      content: '😊你好！我是昆輝專員的AI助理。 守護您辛苦累積的資產，是為了讓未來的生活更有溫度。☀️無論是安享退休或照顧摯愛，讓我依據您的需求，為您打造最安心的依靠。' 
+      content: '您好！我是昆輝專員的AI助理。 守護您辛苦累積的資產，是為了讓未來的生活更有溫度。☀️無論是安享退休或照顧摯愛，讓我依據您的需求，為您打造最安心的依靠。' 
     }
   ]);
   const [isTyping, setIsTyping] = useState(false);
@@ -943,18 +943,18 @@ const AIChatWidget = () => {
 
   // 【核心靈魂】System Prompt
   const SYSTEM_PROMPT = `
-    你是一位專業、溫暖且理性的「保險理財規劃師（林昆輝保險專員）」的 AI 助理。
+    你是一位專業、溫暖且理性的「財務防禦規劃師（林昆輝顧問）」的 AI 助理。
      
     【你的核心理念】
     1. 保險不是為了改變生活，而是防止生活被改變。
     2. 強調「先保大、再保小」：優先處理無法承擔的巨大風險（如死亡、殘廢、癌症）。
-    3. 儘量以「631法則」：60%生活、30%儲蓄、10%風險規劃。
-    4.  儘量以「雙十原則」：保額是年收入10倍，保費是年收入1/10。
+    3. 堅持「631法則」：60%生活、30%儲蓄、10%風險規劃。
+    4. 堅持「雙十原則」：保額是年收入10倍，保費是年收入1/10。
 
     【你的回答風格】
     1. 語氣溫暖、同理心，但邏輯清晰。
     2. 不要一次講太多長篇大論，要引導客戶說出需求。
-    3. 當客戶提到「預算」時，儘可能幫他計算是否符合 631 法則。
+    3. 當客戶提到「預算」時，請務必幫他計算是否符合 631 法則。
     4. 當客戶提到「家庭責任」時（如小孩、房貸），請強調壽險與失能險的重要性。
     5. 不要給予醫療診斷，只針對「財務風險轉嫁」提供建議。
      
@@ -1037,7 +1037,7 @@ const AIChatWidget = () => {
   };
 
   const handleReset = () => {
-     setMessages([{ role: 'assistant', content: '您好！我是昆輝專員的 AI 保險規劃助理。守護您辛苦打拼的資產，預約富足安心的未來。 讓我依據您的年齡與預算，為您量身打造最合適的防護網。' }]);
+     setMessages([{ role: 'assistant', content: '您好！我是林昆輝理財保險顧問的 AI 保險規劃助理。守護您辛苦打拼的資產，預約富足安心的未來。 讓我依據您的年齡與預算，為您量身打造最合適的防護網。' }]);
   };
 
   return (
@@ -1059,7 +1059,7 @@ const AIChatWidget = () => {
             <div className="flex items-center gap-2">
               <div className="bg-white/20 p-2 rounded-full"><Bot className="text-white" size={20} /></div>
               <div>
-                <h3 className="font-bold text-white text-sm">昆輝AI智能助理</h3>
+                <h3 className="font-bold text-white text-sm">AI 智能保險顧問</h3>
                 <p className="text-red-100 text-xs flex items-center gap-1"><span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> Gemini AI 連線中</p>
               </div>
             </div>
@@ -1084,7 +1084,7 @@ const AIChatWidget = () => {
             {isTyping && (
               <div className="flex justify-start">
                 <div className="bg-white border border-gray-100 rounded-2xl rounded-tl-none px-4 py-3 shadow-sm flex items-center gap-2">
-                  <span className="text-xs text-gray-400">昆輝AI助理正在思考...</span>
+                  <span className="text-xs text-gray-400">顧問助理正在思考...</span>
                   <Loader2 className="animate-spin text-red-600" size={14} />
                 </div>
               </div>
@@ -1107,7 +1107,7 @@ const AIChatWidget = () => {
                 <Send size={18} />
               </button>
             </div>
-            <p className="text-center text-[10px] text-gray-400 mt-2">AI 建議僅供參考，實際規劃請免費諮詢昆輝專員。</p>
+            <p className="text-center text-[10px] text-gray-400 mt-2">AI 建議僅供參考，實際規劃請諮詢專業顧問。</p>
           </div>
         </div>
       )}
@@ -1325,7 +1325,7 @@ const FinancialDefensePage = () => {
       <section id="portfolio" className="py-20 bg-white relative">
         <div className="absolute top-0 left-0 w-full h-32 bg-stone-100 skew-y-2 origin-top-right transform -translate-y-16"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-12"><h2 className="text-3xl font-bold text-gray-900 mb-4">全方位保險種類解析</h2><div className="w-24 h-1 bg-red-700 mx-auto rounded-full mb-6"></div><p className="text-gray-600 max-w-2xl mx-auto">理解原則之後，我們需要合適的工具來轉嫁風險。<br/>無論是基礎保障還是財富傳承，這裡都有您需要的解析。</p></div>
+          <div className="text-center mb-12"><h2 className="text-3xl font-bold text-gray-900 mb-4">全方位保險商品解析</h2><div className="w-24 h-1 bg-red-700 mx-auto rounded-full mb-6"></div><p className="text-gray-600 max-w-2xl mx-auto">理解原則之後，我們需要合適的工具來轉嫁風險。<br/>無論是基礎保障還是財富傳承，這裡都有您需要的解析。</p></div>
           <div className="flex flex-wrap justify-center gap-2 mb-10">
             {categories.map((cat) => (
               <button key={cat.id} onClick={() => setActiveCategory(cat.id)} className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${activeCategory === cat.id ? 'bg-red-700 text-white shadow-md transform scale-105' : 'bg-white text-gray-600 border border-gray-200 hover:bg-red-50 hover:text-red-700'}`}>{cat.name}</button>
