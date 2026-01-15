@@ -1053,8 +1053,7 @@ const AIChatWidget = () => {
 
       {/* 聊天視窗 */}
       {isOpen && (
-        // 修改：使用 h-[85vh] 讓手機版高度更高，並置中顯示
-        <div className="fixed bottom-24 right-1/2 translate-x-1/2 md:translate-x-0 md:right-6 w-[95vw] md:w-[480px] h-[85vh] md:h-[720px] bg-white rounded-2xl shadow-2xl z-50 flex flex-col border border-gray-200 overflow-hidden animate-fade-in-up">
+        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 md:right-6 md:bottom-24 w-[95vw] h-[80vh] md:w-[380px] md:h-[550px] bg-white rounded-2xl shadow-2xl z-50 flex flex-col border border-gray-200 overflow-hidden animate-fade-in-up">
           {/* 標題列 */}
           <div className="bg-gradient-to-r from-red-700 to-red-800 p-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -1209,7 +1208,7 @@ const FinancialDefensePage = () => {
         <div className="container mx-auto px-6 flex justify-between items-center">
           <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
             <div className="bg-red-700 p-2 rounded-lg text-white"><Shield size={24} fill="currentColor" /></div>
-            <span className={`text-xl font-bold tracking-wide ${isScrolled ? 'text-gray-800' : 'text-gray-800 md:text-white'}`}>{agentProfile.name} <span className="font-light">財務防禦</span></span>
+            <span className={`text-xl font-bold tracking-wide ${isScrolled ? 'text-gray-800' : 'text-gray-800 md:text-white'}`}>{agentProfile.name} <span className="font-light">財富守護</span></span>
           </div>
           <div className="hidden md:flex items-center gap-8">
             <button onClick={() => scrollToSection('philosophy')} className={`font-medium hover:text-red-600 transition-colors ${isScrolled ? 'text-gray-600' : 'text-white/90'}`}>核心原則</button>
