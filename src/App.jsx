@@ -5,7 +5,6 @@ import {
   Coins, PiggyBank, BarChart3, Landmark, Zap, Scale, FileText, Infinity, Wallet, Hourglass, Palmtree,
   Car, Flame, ShieldAlert, Gavel, Globe, Luggage, CreditCard, Watch, Award, Apple, Bone, HeartHandshake, Syringe,
   TrendingDown, Equal, Scroll, Crown, Users,
-  // 修正：刪除沒用到的 MessageSquare 以解決上傳錯誤
   Send, Bot, Loader2, RefreshCcw 
 } from 'lucide-react';
 
@@ -15,7 +14,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 // 【重要】請確保您的圖片檔案放在 src/assets/ 資料夾內
 import lineQrCode from './assets/my_qrcode_1768092146213.jpg';
 
-// --- 1. 人壽保險詳情頁 (紅色系) ---
+// --- 1. 人壽保險詳情頁 ---
 const LifeInsuranceDetail = ({ onBack, onContact }) => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
@@ -69,7 +68,7 @@ const LifeInsuranceDetail = ({ onBack, onContact }) => {
   );
 };
 
-// --- 2. 醫療保險詳情頁 (綠色系) ---
+// --- 2. 醫療保險詳情頁 ---
 const MedicalInsuranceDetail = ({ onBack, onContact }) => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
@@ -138,7 +137,7 @@ const MedicalInsuranceDetail = ({ onBack, onContact }) => {
   );
 };
 
-// --- 3. 儲蓄理財保險詳情頁 (金色/橙色系) ---
+// --- 3. 儲蓄理財保險詳情頁 ---
 const SavingsInsuranceDetail = ({ onBack, onContact }) => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
@@ -196,7 +195,7 @@ const SavingsInsuranceDetail = ({ onBack, onContact }) => {
   );
 };
 
-// --- 4. 投資型保險詳情頁 (靛藍/紫色系) ---
+// --- 4. 投資型保險詳情頁 ---
 const InvestmentInsuranceDetail = ({ onBack, onContact }) => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
@@ -298,7 +297,7 @@ const InvestmentInsuranceDetail = ({ onBack, onContact }) => {
   );
 };
 
-// --- 5. 年金保險詳情頁 (紫色系) ---
+// --- 5. 年金保險詳情頁 ---
 const AnnuityInsuranceDetail = ({ onBack, onContact }) => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
@@ -390,7 +389,7 @@ const AnnuityInsuranceDetail = ({ onBack, onContact }) => {
   );
 };
 
-// --- 6. 產物保險詳情頁 (藍色系) ---
+// --- 6. 產物保險詳情頁 ---
 const PropertyInsuranceDetail = ({ onBack, onContact }) => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
@@ -488,7 +487,7 @@ const PropertyInsuranceDetail = ({ onBack, onContact }) => {
   );
 };
 
-// --- 7. 旅行平安險詳情頁 (天藍色系) ---
+// --- 7. 旅行平安險詳情頁 ---
 const TravelInsuranceDetail = ({ onBack, onContact }) => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
@@ -591,7 +590,7 @@ const TravelInsuranceDetail = ({ onBack, onContact }) => {
   );
 };
 
-// --- 8. 外溢保單詳情頁 (活力綠色系) ---
+// --- 8. 外溢保單詳情頁 ---
 const SpilloverInsuranceDetail = ({ onBack, onContact }) => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
@@ -685,7 +684,7 @@ const SpilloverInsuranceDetail = ({ onBack, onContact }) => {
   );
 };
 
-// --- 9. 寵物保險詳情頁 (溫暖橘色系) ---
+// --- 9. 寵物保險詳情頁 ---
 const PetInsuranceDetail = ({ onBack, onContact }) => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
@@ -767,7 +766,7 @@ const PetInsuranceDetail = ({ onBack, onContact }) => {
   );
 };
 
-// --- 10. 房貸壽險詳情頁 (沈穩灰藍色系) ---
+// --- 10. 房貸壽險詳情頁 ---
 const MortgageInsuranceDetail = ({ onBack, onContact }) => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
@@ -848,7 +847,7 @@ const MortgageInsuranceDetail = ({ onBack, onContact }) => {
   );
 };
 
-// --- 11. 資產傳承詳情頁 (尊爵金/石墨色) ---
+// --- 11. 資產傳承詳情頁 ---
 const InheritanceInsuranceDetail = ({ onBack, onContact }) => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
@@ -925,7 +924,7 @@ const InheritanceInsuranceDetail = ({ onBack, onContact }) => {
   );
 };
 
-// --- 新增：真實串接 Gemini 的 AI 智能保險顧問視窗 ---
+// --- 新增：真實串接 Gemini 的 AI 智能保險顧問視窗 (已修改為置頂左側版) ---
 const AIChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
@@ -938,28 +937,17 @@ const AIChatWidget = () => {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
 
-  // 讀取環境變數 (Vite 專案需以 VITE_ 開頭)
+  // 讀取環境變數
   const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
-  // 【核心靈魂】System Prompt
   const SYSTEM_PROMPT = `
     你是一位專業、溫暖且理性的「保險理財規劃師（林昆輝保險專員）」的 AI 助理。
-      
     【你的核心理念】
     1. 保險不是為了改變生活，而是防止生活被改變。
-    2. 強調「先保大、再保小」：優先處理無法承擔的巨大風險（如死亡、殘廢、癌症）。
-    3. 儘量以「631法則」：60%生活、30%儲蓄、10%風險規劃。
-    4. 儘量以「雙十原則」：保額是年收入10倍，保費是年收入1/10。
-
-    【你的回答風格】
-    1. 語氣溫暖、同理心，但邏輯清晰。
-    2. 不要一次講太多長篇大論，引導客戶需求。
-    3. 當客戶提到「預算」時，儘可能幫他計算是否符合 631 法則。
-    4. 當客戶提到「家庭責任」時（如小孩、房貸），請強調壽險與失能險的重要性。
-    5. 不要給予醫療診斷，只針對「財務風險轉嫁」提供建議。
-      
+    2. 強調「先保大、再保小」。
+    3. 儘量以「631法則」與「雙十原則」給予建議。
     【你的任務】
-    根據使用者的年齡、性別、家庭狀況與預算，提供具體的險種配置建議（如：實支實付、壽險、重大傷病等），並解釋「為什麼」這樣配。
+    根據使用者的年齡、性別、家庭狀況與預算，提供具體的險種配置建議。
   `;
 
   const scrollToBottom = () => {
@@ -970,26 +958,19 @@ const AIChatWidget = () => {
     scrollToBottom();
   }, [messages, isOpen]);
 
-  // 呼叫 Gemini API
   const callGemini = async (userMessage, history) => {
     setIsTyping(true);
     
     try {
       if (!API_KEY) {
-        throw new Error("找不到 API Key，請檢查 .env 檔案是否設定 VITE_GEMINI_API_KEY");
+        throw new Error("找不到 API Key");
       }
-
-      // 1. 初始化 Google AI Client
       const genAI = new GoogleGenerativeAI(API_KEY);
-      
-      // 2. 取得模型
       const model = genAI.getGenerativeModel({ 
         model: "gemini-2.0-flash",
         systemInstruction: SYSTEM_PROMPT 
       });
 
-      // 3. 轉換歷史訊息格式 (OpenAI -> Gemini 格式)
-      // 【修正關鍵】Gemini 規定歷史紀錄第一筆不能是 AI (model)，所以我們過濾掉第一則歡迎詞
       const formattedHistory = history.slice(0, -1)
         .filter((msg, index) => !(index === 0 && msg.role === 'assistant'))
         .map(msg => ({
@@ -997,16 +978,11 @@ const AIChatWidget = () => {
           parts: [{ text: msg.content }]
         }));
 
-      // 4. 啟動聊天模式
       const chat = model.startChat({
         history: formattedHistory,
-        generationConfig: {
-          maxOutputTokens: 500,
-          temperature: 0.7,
-        },
+        generationConfig: { maxOutputTokens: 500, temperature: 0.7 },
       });
 
-      // 5. 發送使用者訊息
       const result = await chat.sendMessage(userMessage);
       const response = await result.response;
       const botReply = response.text();
@@ -1015,7 +991,7 @@ const AIChatWidget = () => {
 
     } catch (error) {
       console.error("Gemini AI Error:", error);
-      setMessages(prev => [...prev, { role: 'assistant', content: '不好意思，目前系統連線忙碌中，請稍後再試，或是直接點擊上方按鈕預約免費諮商。' }]);
+      setMessages(prev => [...prev, { role: 'assistant', content: '不好意思，目前系統忙碌中，請稍後再試。' }]);
     } finally {
       setIsTyping(false);
     }
@@ -1024,11 +1000,9 @@ const AIChatWidget = () => {
   const handleSend = () => {
     if (!input.trim() || isTyping) return;
     const userText = input;
-    
     const newHistory = [...messages, { role: 'user', content: userText }];
     setMessages(newHistory);
     setInput('');
-
     callGemini(userText, newHistory);
   };
 
@@ -1042,18 +1016,20 @@ const AIChatWidget = () => {
 
   return (
     <>
-      {/* 浮動按鈕 - 設定 z-[60] 確保在最上層 */}
+      {/* 修改處 1：按鈕樣式改為嵌入導覽列的膠囊狀，取消 fixed positioning */}
       <button 
         onClick={() => setIsOpen(!isOpen)} 
-        className={`fixed bottom-6 right-6 z-[60] p-4 rounded-full shadow-2xl transition-all hover:scale-110 flex items-center gap-2 ${isOpen ? 'bg-gray-800 rotate-90' : 'bg-red-700 animate-bounce'}`}
+        className={`mr-4 px-4 py-2 rounded-full shadow-lg transition-all hover:scale-105 flex items-center gap-2 border border-red-200 ${isOpen ? 'bg-gray-800 text-white' : 'bg-red-700 text-white animate-pulse'}`}
       >
-        {isOpen ? <X className="text-white" /> : <Bot className="text-white" size={28} />}
-        {!isOpen && <span className="absolute -top-2 -left-2 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full shadow-sm">AI諮詢</span>}
+        {isOpen ? <X size={18} /> : <Bot size={20} />}
+        <span className="text-sm font-bold hidden md:inline">AI 諮詢</span>
+        {/* 手機版只顯示圖示，縮小一點 */}
+        <span className="text-xs font-bold md:hidden">AI</span>
       </button>
 
-      {/* 聊天視窗 */}
+      {/* 修改處 2：視窗位置改為 top-20 left-4 (左上角彈出) */}
       {isOpen && (
-        <div className="fixed bottom-24 right-1/2 translate-x-1/2 md:translate-x-0 md:right-6 w-[95vw] md:w-[380px] h-[85vh] md:h-[600px] bg-white rounded-2xl shadow-2xl z-50 flex flex-col border border-gray-200 overflow-hidden animate-fade-in-up">
+        <div className="fixed top-20 left-4 md:left-6 w-[95vw] md:w-[380px] h-[70vh] md:h-[600px] bg-white rounded-2xl shadow-2xl z-[100] flex flex-col border border-gray-200 overflow-hidden animate-fade-in-up">
           {/* 標題列 */}
           <div className="bg-gradient-to-r from-red-700 to-red-800 p-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -1063,14 +1039,9 @@ const AIChatWidget = () => {
                 <p className="text-red-100 text-xs flex items-center gap-1"><span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> Gemini AI 連線中</p>
               </div>
             </div>
-            {/* 功能按鈕區：重整 + 關閉 */}
             <div className="flex items-center gap-3">
-                <button onClick={handleReset} className="text-white/80 hover:text-white" title="重新開始">
-                   <RefreshCcw size={18}/>
-                </button>
-                <button onClick={() => setIsOpen(false)} className="text-white/80 hover:text-white" title="關閉視窗">
-                   <X size={20}/>
-                </button>
+                <button onClick={handleReset} className="text-white/80 hover:text-white" title="重新開始"><RefreshCcw size={18}/></button>
+                <button onClick={() => setIsOpen(false)} className="text-white/80 hover:text-white" title="關閉視窗"><X size={20}/></button>
             </div>
           </div>
 
@@ -1113,7 +1084,6 @@ const AIChatWidget = () => {
                 <Send size={18} />
               </button>
             </div>
-            <p className="text-center text-[10px] text-gray-400 mt-2">AI 建議僅供參考，實際規劃可洽昆輝專員。</p>
           </div>
         </div>
       )}
@@ -1212,10 +1182,19 @@ const FinancialDefensePage = () => {
     <div className="font-sans text-gray-700 bg-stone-50 min-h-screen selection:bg-red-100 selection:text-red-800">
       <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-5'}`}>
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <div className="bg-red-700 p-2 rounded-lg text-white"><Shield size={24} fill="currentColor" /></div>
-            <span className={`text-xl font-bold tracking-wide ${isScrolled ? 'text-gray-800' : 'text-gray-800 md:text-white'}`}>{agentProfile.name} <span className="font-light">財富守護</span></span>
+          
+          {/* 左側區域：包含 AI 按鈕與 Logo */}
+          <div className="flex items-center">
+            {/* 1. 在這裡插入 AI 按鈕 */}
+            <AIChatWidget />
+
+            {/* 2. 原本的 Logo 區域 */}
+            <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+              <div className="bg-red-700 p-2 rounded-lg text-white"><Shield size={24} fill="currentColor" /></div>
+              <span className={`text-xl font-bold tracking-wide ${isScrolled ? 'text-gray-800' : 'text-gray-800 md:text-white'}`}>{agentProfile.name} <span className="font-light">財富守護</span></span>
+            </div>
           </div>
+
           <div className="hidden md:flex items-center gap-8">
             <button onClick={() => scrollToSection('philosophy')} className={`font-medium hover:text-red-600 transition-colors ${isScrolled ? 'text-gray-600' : 'text-white/90'}`}>核心原則</button>
             <button onClick={() => scrollToSection('priorities')} className={`font-medium hover:text-red-600 transition-colors ${isScrolled ? 'text-gray-600' : 'text-white/90'}`}>防護順序</button>
@@ -1384,9 +1363,6 @@ const FinancialDefensePage = () => {
       <footer className="bg-white border-t border-gray-100 py-8">
          <div className="container mx-auto px-6 text-center text-sm text-gray-500"><p className="mb-2">本網站內容僅供保險觀念推廣與教育用途，詳細商品內容與理賠條件請以各保險公司正式保單條款為準。</p><p>Financial Defense Blueprint · Designed for Insurance Professionals</p></div>
       </footer>
-
-      {/* --- 在這裡加入 AI 視窗 --- */}
-      <AIChatWidget />
 
       {showContactModal && (
         <div className="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
