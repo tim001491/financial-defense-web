@@ -1208,7 +1208,7 @@ const FinancialDefensePage = () => {
         <div className="container mx-auto px-6 flex justify-between items-center">
           <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
             <div className="bg-red-700 p-2 rounded-lg text-white"><Shield size={24} fill="currentColor" /></div>
-            <span className={`text-xl font-bold tracking-wide ${isScrolled ? 'text-gray-800' : 'text-gray-800 md:text-white'}`}>{agentProfile.name} <span className="font-light">財務防禦</span></span>
+            <span className={`text-xl font-bold tracking-wide ${isScrolled ? 'text-gray-800' : 'text-gray-800 md:text-white'}`}>{agentProfile.name} <span className="font-light">財富守護</span></span>
           </div>
           <div className="hidden md:flex items-center gap-8">
             <button onClick={() => scrollToSection('philosophy')} className={`font-medium hover:text-red-600 transition-colors ${isScrolled ? 'text-gray-600' : 'text-white/90'}`}>核心原則</button>
@@ -1222,8 +1222,8 @@ const FinancialDefensePage = () => {
           <div className="md:hidden absolute top-full left-0 w-full bg-white shadow-lg border-t border-gray-100 py-4 px-6 flex flex-col gap-4">
             <button onClick={() => scrollToSection('philosophy')} className="text-left text-gray-600 py-2 border-b border-gray-50">核心原則</button>
             <button onClick={() => scrollToSection('priorities')} className="text-left text-gray-600 py-2 border-b border-gray-50">防護順序</button>
-            <button onClick={() => scrollToSection('portfolio')} className="text-left text-gray-600 py-2 border-b border-gray-50">商品解析</button>
-            <button onClick={() => { setIsMenuOpen(false); toggleContactModal(); }} className="text-center bg-red-700 text-white py-3 rounded-lg mt-2">預約健診</button>
+            <button onClick={() => scrollToSection('portfolio')} className="text-left text-gray-600 py-2 border-b border-gray-50">保險解析</button>
+            <button onClick={() => { setIsMenuOpen(false); toggleContactModal(); }} className="text-center bg-red-700 text-white py-3 rounded-lg mt-2">預約諮商</button>
           </div>
         )}
       </nav>
@@ -1239,8 +1239,8 @@ const FinancialDefensePage = () => {
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-8 tracking-tight">保險不是為了改變生活<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-red-700 to-orange-700">而是為了防止生活被改變</span></h1>
             <p className="text-lg md:text-xl text-gray-600 mb-10 leading-relaxed max-w-2xl mx-auto">{agentProfile.slogan}<br className="hidden md:block"/>透過理性的預算分配，讓我們一起守護您最珍視的家。</p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <button onClick={toggleContactModal} className="bg-gray-900 hover:bg-black text-white px-8 py-4 rounded-xl font-medium text-lg transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1 flex items-center justify-center gap-2">啟動防禦計畫 <ArrowRight size={20} /></button>
-              <button onClick={() => scrollToSection('portfolio')} className="bg-white hover:bg-red-50 text-gray-700 border border-gray-200 px-8 py-4 rounded-xl font-medium text-lg transition-all hover:border-red-300 flex items-center justify-center gap-2">瀏覽保險商品</button>
+              <button onClick={toggleContactModal} className="bg-gray-900 hover:bg-black text-white px-8 py-4 rounded-xl font-medium text-lg transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1 flex items-center justify-center gap-2">免費諮商 <ArrowRight size={20} /></button>
+              <button onClick={() => scrollToSection('portfolio')} className="bg-white hover:bg-red-50 text-gray-700 border border-gray-200 px-8 py-4 rounded-xl font-medium text-lg transition-all hover:border-red-300 flex items-center justify-center gap-2">瀏覽保險種類</button>
             </div>
           </div>
         </div>
