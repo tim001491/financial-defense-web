@@ -1053,7 +1053,8 @@ const AIChatWidget = () => {
 
       {/* 聊天視窗 */}
       {isOpen && (
-        <div className="fixed bottom-24 right-6 w-[90vw] md:w-[380px] h-[500px] bg-white rounded-2xl shadow-2xl z-50 flex flex-col border border-gray-200 overflow-hidden animate-fade-in-up">
+        {/* 修改後的視窗大小設定 */}
+<div className="fixed bottom-20 right-1/2 translate-x-1/2 md:translate-x-0 md:right-6 w-[95vw] md:w-[450px] h-[75vh] md:h-[650px] bg-white rounded-2xl shadow-2xl z-50 flex flex-col border border-gray-200 overflow-hidden animate-fade-in-up">
           {/* 標題列 */}
           <div className="bg-gradient-to-r from-red-700 to-red-800 p-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
