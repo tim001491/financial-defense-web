@@ -1042,10 +1042,10 @@ const AIChatWidget = () => {
 
   return (
     <>
-      {/* 浮動按鈕 */}
+      {/* 浮動按鈕 - 設定 z-[60] 確保在最上層 */}
       <button 
         onClick={() => setIsOpen(!isOpen)} 
-        className={`fixed bottom-6 right-6 z-50 p-4 rounded-full shadow-2xl transition-all hover:scale-110 flex items-center gap-2 ${isOpen ? 'bg-gray-800 rotate-90' : 'bg-red-700 animate-bounce'}`}
+        className={`fixed bottom-6 right-6 z-[60] p-4 rounded-full shadow-2xl transition-all hover:scale-110 flex items-center gap-2 ${isOpen ? 'bg-gray-800 rotate-90' : 'bg-red-700 animate-bounce'}`}
       >
         {isOpen ? <X className="text-white" /> : <Bot className="text-white" size={28} />}
         {!isOpen && <span className="absolute -top-2 -left-2 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full shadow-sm">AI 諮詢</span>}
@@ -1053,7 +1053,7 @@ const AIChatWidget = () => {
 
       {/* 聊天視窗 */}
       {isOpen && (
-        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 md:right-6 md:bottom-24 w-[95vw] h-[80vh] md:w-[380px] md:h-[550px] bg-white rounded-2xl shadow-2xl z-50 flex flex-col border border-gray-200 overflow-hidden animate-fade-in-up">
+        <div className="fixed bottom-24 right-1/2 translate-x-1/2 md:translate-x-0 md:right-6 w-[95vw] md:w-[380px] h-[85vh] md:h-[600px] bg-white rounded-2xl shadow-2xl z-50 flex flex-col border border-gray-200 overflow-hidden animate-fade-in-up">
           {/* 標題列 */}
           <div className="bg-gradient-to-r from-red-700 to-red-800 p-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -1063,9 +1063,15 @@ const AIChatWidget = () => {
                 <p className="text-red-100 text-xs flex items-center gap-1"><span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> Gemini AI 連線中</p>
               </div>
             </div>
-            <button onClick={handleReset} className="text-white/80 hover:text-white" title="重新開始">
-               <RefreshCcw size={18}/>
-            </button>
+            {/* 功能按鈕區：重整 + 關閉 */}
+            <div className="flex items-center gap-3">
+                <button onClick={handleReset} className="text-white/80 hover:text-white" title="重新開始">
+                   <RefreshCcw size={18}/>
+                </button>
+                <button onClick={() => setIsOpen(false)} className="text-white/80 hover:text-white" title="關閉視窗">
+                   <X size={20}/>
+                </button>
+            </div>
           </div>
 
           {/* 訊息區 */}
