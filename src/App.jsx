@@ -949,17 +949,17 @@ const AIChatWidget = () => {
     1. 保險不是為了改變生活，而是防止生活被改變。
     2. 強調「先保大、再保小」：優先處理無法承擔的巨大風險（如死亡、殘廢、癌症）。
     3. 儘量以「631法則」：60%生活、30%儲蓄、10%風險規劃。
-    4.  儘量以「雙十原則」：保額是年收入10倍，保費是年收入1/10。
+    4. 儘量以「雙十原則」：保額是年收入10倍，保費是年收入1/10。
 
     【你的回答風格】
     1. 語氣溫暖、同理心，但邏輯清晰。
-    2. 不要一次講太多長篇大論，要引導客戶說出需求。
+    2. 不要一次講太多長篇大論，引導客戶需求。
     3. 當客戶提到「預算」時，儘可能幫他計算是否符合 631 法則。
     4. 當客戶提到「家庭責任」時（如小孩、房貸），請強調壽險與失能險的重要性。
     5. 不要給予醫療診斷，只針對「財務風險轉嫁」提供建議。
       
     【你的任務】
-    根據使用者的年齡、性別、家庭狀況與預算，提供具體的險種配置建議（如：實支實付、定期壽險、重大傷病等），並解釋「為什麼」這樣配。
+    根據使用者的年齡、性別、家庭狀況與預算，提供具體的險種配置建議（如：實支實付、壽險、重大傷病等），並解釋「為什麼」這樣配。
   `;
 
   const scrollToBottom = () => {
@@ -1015,7 +1015,7 @@ const AIChatWidget = () => {
 
     } catch (error) {
       console.error("Gemini AI Error:", error);
-      setMessages(prev => [...prev, { role: 'assistant', content: '不好意思，目前系統連線忙碌中，請稍後再試，或是直接點擊上方按鈕預約林昆輝顧問諮詢。' }]);
+      setMessages(prev => [...prev, { role: 'assistant', content: '不好意思，目前系統連線忙碌中，請稍後再試，或是直接點擊上方按鈕預約免費諮商。' }]);
     } finally {
       setIsTyping(false);
     }
@@ -1037,7 +1037,7 @@ const AIChatWidget = () => {
   };
 
   const handleReset = () => {
-     setMessages([{ role: 'assistant', content: '您好！我是昆輝專員的 AI 保險規劃助理。守護您辛苦打拼的資產，預約富足安心的未來。 讓我依據您的年齡與預算，為您量身打造最合適的防護網。' }]);
+     setMessages([{ role: 'assistant', content: '😊你好！我是昆輝專員的AI助理。 守護您辛苦累積的資產，是為了讓未來的生活更有溫度。☀️無論是安享退休或照顧摯愛，讓我依據您的需求，為您打造最安心的依靠。' }]);
   };
 
   return (
@@ -1048,7 +1048,7 @@ const AIChatWidget = () => {
         className={`fixed bottom-6 right-6 z-[60] p-4 rounded-full shadow-2xl transition-all hover:scale-110 flex items-center gap-2 ${isOpen ? 'bg-gray-800 rotate-90' : 'bg-red-700 animate-bounce'}`}
       >
         {isOpen ? <X className="text-white" /> : <Bot className="text-white" size={28} />}
-        {!isOpen && <span className="absolute -top-2 -left-2 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full shadow-sm">AI 諮詢</span>}
+        {!isOpen && <span className="absolute -top-2 -left-2 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full shadow-sm">AI諮詢</span>}
       </button>
 
       {/* 聊天視窗 */}
@@ -1059,7 +1059,7 @@ const AIChatWidget = () => {
             <div className="flex items-center gap-2">
               <div className="bg-white/20 p-2 rounded-full"><Bot className="text-white" size={20} /></div>
               <div>
-                <h3 className="font-bold text-white text-sm">昆輝AI智能助理</h3>
+                <h3 className="font-bold text-white text-sm">昆輝AI助理</h3>
                 <p className="text-red-100 text-xs flex items-center gap-1"><span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> Gemini AI 連線中</p>
               </div>
             </div>
@@ -1090,7 +1090,7 @@ const AIChatWidget = () => {
             {isTyping && (
               <div className="flex justify-start">
                 <div className="bg-white border border-gray-100 rounded-2xl rounded-tl-none px-4 py-3 shadow-sm flex items-center gap-2">
-                  <span className="text-xs text-gray-400">昆輝AI助理正在思考...</span>
+                  <span className="text-xs text-gray-400">AI諮商助理正在思考...</span>
                   <Loader2 className="animate-spin text-red-600" size={14} />
                 </div>
               </div>
@@ -1113,7 +1113,7 @@ const AIChatWidget = () => {
                 <Send size={18} />
               </button>
             </div>
-            <p className="text-center text-[10px] text-gray-400 mt-2">AI 建議僅供參考，實際規劃請免費諮詢昆輝專員。</p>
+            <p className="text-center text-[10px] text-gray-400 mt-2">AI 建議僅供參考，實際規劃可洽昆輝專員。</p>
           </div>
         </div>
       )}
@@ -1220,7 +1220,7 @@ const FinancialDefensePage = () => {
             <button onClick={() => scrollToSection('philosophy')} className={`font-medium hover:text-red-600 transition-colors ${isScrolled ? 'text-gray-600' : 'text-white/90'}`}>核心原則</button>
             <button onClick={() => scrollToSection('priorities')} className={`font-medium hover:text-red-600 transition-colors ${isScrolled ? 'text-gray-600' : 'text-white/90'}`}>防護順序</button>
             <button onClick={() => scrollToSection('portfolio')} className={`font-medium hover:text-red-600 transition-colors ${isScrolled ? 'text-gray-600' : 'text-white/90'}`}>商品解析</button>
-            <button onClick={toggleContactModal} className="bg-red-700 hover:bg-red-800 text-white px-6 py-2 rounded-full font-medium transition-all shadow-lg hover:shadow-red-900/30 transform hover:-translate-y-0.5">預約健診</button>
+            <button onClick={toggleContactModal} className="bg-red-700 hover:bg-red-800 text-white px-6 py-2 rounded-full font-medium transition-all shadow-lg hover:shadow-red-900/30 transform hover:-translate-y-0.5">免費諮商</button>
           </div>
           <div className="md:hidden text-gray-800"><button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2">{isMenuOpen ? <X size={28} /> : <Menu size={28} className={isScrolled ? 'text-gray-800' : 'text-gray-800 md:text-white'} />}</button></div>
         </div>
@@ -1229,7 +1229,7 @@ const FinancialDefensePage = () => {
             <button onClick={() => scrollToSection('philosophy')} className="text-left text-gray-600 py-2 border-b border-gray-50">核心原則</button>
             <button onClick={() => scrollToSection('priorities')} className="text-left text-gray-600 py-2 border-b border-gray-50">防護順序</button>
             <button onClick={() => scrollToSection('portfolio')} className="text-left text-gray-600 py-2 border-b border-gray-50">商品解析</button>
-            <button onClick={() => { setIsMenuOpen(false); toggleContactModal(); }} className="text-center bg-red-700 text-white py-3 rounded-lg mt-2">預約健診</button>
+            <button onClick={() => { setIsMenuOpen(false); toggleContactModal(); }} className="text-center bg-red-700 text-white py-3 rounded-lg mt-2">免費諮商</button>
           </div>
         )}
       </nav>
