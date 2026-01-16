@@ -1079,7 +1079,7 @@ const AIChatWidget = () => {
             <div className="flex items-center gap-2">
               <div className="bg-white/20 p-2 rounded-full"><Bot className="text-white" size={20} /></div>
               <div>
-                <h3 className="font-bold text-white text-sm">昆輝 AI 財富顧問</h3>
+                <h3 className="font-bold text-white text-sm">昆輝AI助理</h3>
                 <p className="text-red-100 text-xs flex items-center gap-1"><span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> Gemini AI 連線中</p>
               </div>
             </div>
