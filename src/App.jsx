@@ -1066,11 +1066,18 @@ const AIChatWidget = () => {
     <>
       <button 
         onClick={() => setIsOpen(!isOpen)} 
-        className={`mr-4 px-4 py-2 rounded-full shadow-lg transition-all hover:scale-105 flex items-center gap-2 border border-red-200 ${isOpen ? 'bg-gray-800 text-white' : 'bg-red-700 text-white animate-pulse'}`}
+        // 修改說明：
+        // 1. px-3 py-1.5 (手機縮小內距) / md:px-4 md:py-2 (電腦維持)
+        // 2. gap-1 (手機縮小間距) / md:gap-2 (電腦維持)
+        // 3. mr-2 (手機縮小右邊距) / md:mr-4 (電腦維持)
+        // 4. whitespace-nowrap (關鍵：強制不換行)
+        className={`mr-2 md:mr-4 px-3 py-1.5 md:px-4 md:py-2 rounded-full shadow-lg transition-all hover:scale-105 flex items-center gap-1 md:gap-2 border border-red-200 whitespace-nowrap ${isOpen ? 'bg-gray-800 text-white' : 'bg-red-700 text-white animate-pulse'}`}
       >
-        {isOpen ? <X size={18} /> : <Bot size={20} />}
-        {/* 統一顯示 AI 諮詢 */}
-        <span className="text-sm font-bold">AI 諮詢</span>
+        {/* 手機版 icon 縮小至 16px，電腦版 18/20px */}
+        {isOpen ? <X size={16} className="md:w-[18px] md:h-[18px]" /> : <Bot size={16} className="md:w-[20px] md:h-[20px]" />}
+        
+        {/* 手機版字體縮小至 text-xs (12px)，電腦版 text-sm */}
+        <span className="text-xs md:text-sm font-bold">AI 諮詢</span>
       </button>
 
       {isOpen && (
