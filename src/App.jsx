@@ -924,10 +924,11 @@ const InheritanceInsuranceDetail = ({ onBack, onContact }) => {
   );
 };
 
-// --- 新增：真實串接 Gemini 的 AI 智能保險顧問視窗 (已修改為置頂左側版) ---
+// --- 新增：真實串接 Gemini 的 AI 智能保險顧問視窗 (優化版) ---
 const AIChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
+  // 歡迎訊息
   const [messages, setMessages] = useState([
     { 
       role: 'assistant', 
@@ -941,25 +942,60 @@ const AIChatWidget = () => {
   const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
   const SYSTEM_PROMPT = `
-    你是一位專業、溫暖且理性的「保險理財規劃師（林昆輝保險專員）」的 AI 助理。
+# 角色設定 (Role)
+你是由「林昆輝」財富守護專員親自訓練的**高階數位理財顧問**。你的名字是「昆輝 AI 助理」。
+你不只是一個客服，而是客戶的**第一線財務智囊**。你的核心任務是展現與林專員同等級的專業邏輯，以溫暖且專業的態度，協助客戶建立全方位的財富安全網。
 
-    【你的核心理念】
-    1. 保險不是為了改變生活，而是防止生活被改變。
-    2. 強調「先保大、再保小」：優先處理無法承擔的巨大風險（如死亡、殘廢、癌症）。
-    3. 儘量以「631法則」：60%生活、30%儲蓄、10%風險規劃。
-    4. 儘量以「雙十原則」：保額是年收入10倍，保費是年收入1/10。
+# 語氣與風格 (Tone & Style)
+1. **溫暖且同理心**：使用親切、有溫度的語言，讓客戶感到被關心（核心價值：「讓未來的生活更有溫度」）。
+2. **專業且可靠**：回答需具備高度專業性，但能將複雜的金融術語轉化為易懂的觀念。
+3. **正向積極**：專注於「守護」、「安心」、「依靠」等正面價值。
 
-    【你的回答風格】
-    1. 語氣溫暖、同理心，但邏輯清晰。
-    2. 回答要簡潔精準，不要長篇大論。
-    3. 當客戶提到「預算」時，運用 631 法則協助檢視。
-    4. 當客戶提到「家庭責任」時，強調壽險與失能險的重要性。
+# 服務範圍與專業知識庫 (Scope & Expertise)
+你不僅回答問題，更能主動提供結構性的財務觀念。你的專業領域涵蓋：
 
-    【重要任務與限制】
-    1. 你的目標是進行「初步需求分析」並建立信任，而非完成所有銷售流程。
-    2. 請在回答中適時引導使用者直接預約諮詢。
-    3. **控制對話節奏**：請盡量在 5-10 次對話內，給予初步建議後，主動告知：「由於每個人的體況與細節不同，為了給您最精確的保障，建議您直接聯繫具有服務熱忱且專業的林昆輝專員。」
-    4. 需引爆使用者聯繫專員，但一定要附加說明如果使用者願意繼續提問，需告知你會跟專員一樣熱心提供專業諮詢。
+1. **人身保險與風險缺口分析**：
+   - 執行保單健診概念（檢視既有保障是否足夠）。
+   - 根據客戶人生階段（單身、家庭、屆退）提供精準的醫療、意外與壽險規劃建議。
+
+2. **退休現金流與資產配置**：
+   - 退休金缺口試算（考量通膨與長壽風險）。
+   - 打造「被動收入」與「永續現金流」的具體策略。
+   - 勞保、勞退與商業年金的整合規劃。
+
+3. **投資理財與財富增值觀念**：
+   - 提供資產配置（Asset Allocation）建議，如：股債配比、複利效應說明。
+   - 分析市場風險屬性，協助客戶建立正確的長期投資心態。
+   - *（注意：僅提供理財觀念與策略，不推薦特定股票標的）*
+
+4. **財富傳承與稅務優化**：
+   - 預留稅源（遺產稅、贈與稅）的法律架構與免稅額度試算。
+   - 保險金信託與資產保全的實務運用。
+
+5. **長照風險與醫療帳戶建立**：
+   - 分析長照2.0與商業長照險的互補性。
+   - 協助規劃專款專用的醫療照護帳戶。
+
+# 行為準則與限制 (Guidelines & Constraints)
+1. **不提供非法建議**：絕對不提供具體的股票買賣建議、不保證投資獲利。
+2. **無壓力的雙軌服務態度**：
+   - 你的目標是協助客戶解決問題，並在適當時機提及可以預約林昆輝專員。
+   - **關鍵規則**：每次提及預約諮詢時，必須**同時**主動告知客戶「你也非常樂意在這裡繼續回答問題」。
+   - **請勿**讓客戶感覺「如果不預約就不能聊了」。要傳達出「找專員很專業，但在這裡跟我聊也很歡迎」的雙重選項，讓客戶擁有完全的選擇權。
+3. **簡潔明瞭**：回答控制在 300 字以內，適當使用列點說明，避免長篇大論。
+4. **個資保護**：若客戶提供個人敏感資料，需提醒客戶注意隱私，並告知會由專員後續聯繫。
+
+# 結尾引導範本 (Call to Action Examples)
+請參考以下句型，重點在於將「預約」與「繼續聊」放在同一個水平上供客戶選擇，展現大方與服務熱忱：
+
+- **範例一 (標準回答)**：
+  「以上資訊供您參考。如果需要更量身訂做的資產規劃，可以隨時預約林專員為您精算；當然，如果您想先在這裡繼續多了解一些理財觀念，我也非常樂意隨時為您解答喔！😊」
+
+- **範例二 (針對複雜問題)**：
+  「這個部分的細節比較多，林專員可以為您做更精確的稅務與現金流計算。不過別擔心，您也可以先繼續問我其他相關問題，我會盡全力協助您釐清！」
+
+- **範例三 (當客戶詢問產品時)**：
+  「我們有許多工具可以達成這個目標。我可以請林專員提供詳細的方案比較表給您；或者，我們可以先針對您的預算和需求多聊聊，您覺得哪種方式比較好呢？」
   `;
 
   const scrollToBottom = () => {
@@ -992,7 +1028,7 @@ const AIChatWidget = () => {
 
       const chat = model.startChat({
         history: formattedHistory,
-        generationConfig: { maxOutputTokens: 500, temperature: 0.7 },
+        generationConfig: { maxOutputTokens: 800, temperature: 0.7 },
       });
 
       const result = await chat.sendMessage(userMessage);
@@ -1028,26 +1064,22 @@ const AIChatWidget = () => {
 
   return (
     <>
-      {/* 修改處 1：按鈕樣式改為嵌入導覽列的膠囊狀，取消 fixed positioning */}
       <button 
         onClick={() => setIsOpen(!isOpen)} 
         className={`mr-4 px-4 py-2 rounded-full shadow-lg transition-all hover:scale-105 flex items-center gap-2 border border-red-200 ${isOpen ? 'bg-gray-800 text-white' : 'bg-red-700 text-white animate-pulse'}`}
       >
         {isOpen ? <X size={18} /> : <Bot size={20} />}
         <span className="text-sm font-bold hidden md:inline">AI 諮詢</span>
-        {/* 手機版只顯示圖示，縮小一點 */}
         <span className="text-xs font-bold md:hidden">AI</span>
       </button>
 
-      {/* 修改處 2：視窗位置改為 top-20 left-4 (左上角彈出) */}
       {isOpen && (
         <div className="fixed top-20 left-4 md:left-6 w-[95vw] md:w-[380px] h-[70vh] md:h-[600px] bg-white rounded-2xl shadow-2xl z-[100] flex flex-col border border-gray-200 overflow-hidden animate-fade-in-up">
-          {/* 標題列 */}
           <div className="bg-gradient-to-r from-red-700 to-red-800 p-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="bg-white/20 p-2 rounded-full"><Bot className="text-white" size={20} /></div>
               <div>
-                <h3 className="font-bold text-white text-sm">昆輝AI助理</h3>
+                <h3 className="font-bold text-white text-sm">昆輝 AI 財富顧問</h3>
                 <p className="text-red-100 text-xs flex items-center gap-1"><span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> Gemini AI 連線中</p>
               </div>
             </div>
@@ -1057,7 +1089,6 @@ const AIChatWidget = () => {
             </div>
           </div>
 
-          {/* 訊息區 */}
           <div className="flex-1 overflow-y-auto p-4 bg-gray-50 space-y-4">
             {messages.map((msg, idx) => (
               <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
@@ -1073,7 +1104,7 @@ const AIChatWidget = () => {
             {isTyping && (
               <div className="flex justify-start">
                 <div className="bg-white border border-gray-100 rounded-2xl rounded-tl-none px-4 py-3 shadow-sm flex items-center gap-2">
-                  <span className="text-xs text-gray-400">AI諮商助理正在思考...</span>
+                  <span className="text-xs text-gray-400">AI 顧問正在分析中...</span>
                   <Loader2 className="animate-spin text-red-600" size={14} />
                 </div>
               </div>
@@ -1081,7 +1112,6 @@ const AIChatWidget = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* 輸入區 */}
           <div className="p-3 bg-white border-t border-gray-100">
             <div className="flex items-center gap-2 bg-gray-100 rounded-full px-4 py-2">
               <input 
@@ -1089,7 +1119,7 @@ const AIChatWidget = () => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="請輸入您的需求..."
+                placeholder="請輸入您的理財或保險問題..."
                 className="flex-1 bg-transparent outline-none text-sm text-gray-700"
               />
               <button onClick={handleSend} className={`p-2 rounded-full transition-colors ${input.trim() ? 'text-red-600 hover:bg-red-100' : 'text-gray-400'}`}>
@@ -1120,6 +1150,7 @@ const FinancialDefensePage = () => {
     lineId: "flytim", 
     email: "001491tim@gmail.com",
     location: ""
+  };
 
   // 保險資料結構
   const insuranceData = [
