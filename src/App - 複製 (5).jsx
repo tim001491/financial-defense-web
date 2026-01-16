@@ -1059,7 +1059,7 @@ const AIChatWidget = () => {
   };
 
   const handleReset = () => {
-      setMessages([{ role: 'assistant', content: '😊你好！我是昆輝專員的AI助理。 守護您辛苦累積的資產，是為了讓未來的生活更有溫度。☀️無論是安享退休或照顧摯愛，讓我依據您的需求，為您打造最安心的依靠。' }]);
+     setMessages([{ role: 'assistant', content: '😊你好！我是昆輝專員的AI助理。 守護您辛苦累積的資產，是為了讓未來的生活更有溫度。☀️無論是安享退休或照顧摯愛，讓我依據您的需求，為您打造最安心的依靠。' }]);
   };
 
   return (
@@ -1069,8 +1069,8 @@ const AIChatWidget = () => {
         className={`mr-4 px-4 py-2 rounded-full shadow-lg transition-all hover:scale-105 flex items-center gap-2 border border-red-200 ${isOpen ? 'bg-gray-800 text-white' : 'bg-red-700 text-white animate-pulse'}`}
       >
         {isOpen ? <X size={18} /> : <Bot size={20} />}
-        {/* 統一顯示 AI 諮詢 */}
-        <span className="text-sm font-bold">AI 諮詢</span>
+        <span className="text-sm font-bold hidden md:inline">AI 諮詢</span>
+        <span className="text-xs font-bold md:hidden">AI</span>
       </button>
 
       {isOpen && (
