@@ -1154,22 +1154,22 @@ const AIChatWidget = () => {
   );
 };
 
-// --- 新增：訪客數計數器元件 (只保留累積與今日人數) ---
+// --- 新增：訪客數計數器元件 (修正：初始值歸零 & 更換紀錄名稱) ---
 const VisitorCounter = () => {
-  const [counts, setCounts] = useState({ total: 3, today: 3 });
+  const [counts, setCounts] = useState({ total: 0, today: 0 }); // 修正：初始值歸零
 
   useEffect(() => {
     // 取得今日日期 (YYYY-MM-DD)
     const todayStr = new Date().toISOString().split('T')[0];
     
-    // 從 localStorage 讀取紀錄
-    const storedTotal = localStorage.getItem('site_total_visits');
-    const storedDate = localStorage.getItem('site_last_visit_date');
-    const storedToday = localStorage.getItem('site_today_visits');
+    // 從 localStorage 讀取紀錄 (修正：使用 _new 後綴，確保舊數據不干擾)
+    const storedTotal = localStorage.getItem('site_total_visits_new');
+    const storedDate = localStorage.getItem('site_last_visit_date_new');
+    const storedToday = localStorage.getItem('site_today_visits_new');
 
-    // 預設值 (若無紀錄則從 783/3 開始)
+    // 預設值 (修正：若無紀錄則從 0 開始)
     let newTotal = storedTotal ? parseInt(storedTotal) : 0;
-    let newToday = 3;
+    let newToday = 0; // 修正：預設今日也為 0
 
     // 判斷是否過了一天
     if (storedDate === todayStr && storedToday) {
@@ -1178,13 +1178,13 @@ const VisitorCounter = () => {
       newToday = 1; // 不同天，今日重置為1
     }
     
-    newTotal += 1; // 總人數永遠+1
+    newTotal += 1; // 總人數永遠+1 (所以第一次執行會變成 0+1 = 1)
 
-    // 更新畫面與儲存
+    // 更新畫面與儲存 (修正：寫入 _new 的新欄位)
     setCounts({ total: newTotal, today: newToday });
-    localStorage.setItem('site_total_visits', newTotal.toString());
-    localStorage.setItem('site_last_visit_date', todayStr);
-    localStorage.setItem('site_today_visits', newToday.toString());
+    localStorage.setItem('site_total_visits_new', newTotal.toString());
+    localStorage.setItem('site_last_visit_date_new', todayStr);
+    localStorage.setItem('site_today_visits_new', newToday.toString());
   }, []);
 
   return (
