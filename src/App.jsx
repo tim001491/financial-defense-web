@@ -1156,7 +1156,7 @@ const AIChatWidget = () => {
 
 // --- 新增：訪客數計數器元件 (只保留累積與今日人數) ---
 const VisitorCounter = () => {
-  const [counts, setCounts] = useState({ total: 783, today: 3 });
+  const [counts, setCounts] = useState({ total: 3, today: 3 });
 
   useEffect(() => {
     // 取得今日日期 (YYYY-MM-DD)
