@@ -1168,7 +1168,7 @@ const VisitorCounter = () => {
     const storedToday = localStorage.getItem('site_today_visits');
 
     // 預設值 (若無紀錄則從 783/3 開始)
-    let newTotal = storedTotal ? parseInt(storedTotal) : 783;
+    let newTotal = storedTotal ? parseInt(storedTotal) : 0;
     let newToday = 3;
 
     // 判斷是否過了一天
