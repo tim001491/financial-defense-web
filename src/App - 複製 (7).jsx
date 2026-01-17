@@ -924,10 +924,11 @@ const InheritanceInsuranceDetail = ({ onBack, onContact }) => {
   );
 };
 
-// --- AI 智能保險顧問視窗 ---
+// --- 新增：真實串接 Gemini 的 AI 智能保險顧問視窗 (優化版) ---
 const AIChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
+  // 歡迎訊息
   const [messages, setMessages] = useState([
     { 
       role: 'assistant', 
@@ -936,6 +937,8 @@ const AIChatWidget = () => {
   ]);
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
+
+  // 讀取環境變數
   const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
   const SYSTEM_PROMPT = `
@@ -1088,9 +1091,17 @@ const AIChatWidget = () => {
     <>
       <button 
         onClick={() => setIsOpen(!isOpen)} 
+        // 修改說明：
+        // 1. px-3 py-1.5 (手機縮小內距) / md:px-4 md:py-2 (電腦維持)
+        // 2. gap-1 (手機縮小間距) / md:gap-2 (電腦維持)
+        // 3. mr-2 (手機縮小右邊距) / md:mr-4 (電腦維持)
+        // 4. whitespace-nowrap (關鍵：強制不換行)
         className={`mr-2 md:mr-4 px-3 py-1.5 md:px-4 md:py-2 rounded-full shadow-lg transition-all hover:scale-105 flex items-center gap-1 md:gap-2 border border-red-200 whitespace-nowrap ${isOpen ? 'bg-gray-800 text-white' : 'bg-red-700 text-white animate-pulse'}`}
       >
+        {/* 手機版 icon 縮小至 16px，電腦版 18/20px */}
         {isOpen ? <X size={16} className="md:w-[18px] md:h-[18px]" /> : <Bot size={16} className="md:w-[20px] md:h-[20px]" />}
+        
+        {/* 手機版字體縮小至 text-xs (12px)，電腦版 text-sm */}
         <span className="text-xs md:text-sm font-bold">AI 諮詢</span>
       </button>
 
@@ -1151,60 +1162,6 @@ const AIChatWidget = () => {
         </div>
       )}
     </>
-  );
-};
-
-// --- 新增：訪客數計數器元件 (只保留累積與今日人數) ---
-const VisitorCounter = () => {
-  const [counts, setCounts] = useState({ total: 783, today: 3 });
-
-  useEffect(() => {
-    // 取得今日日期 (YYYY-MM-DD)
-    const todayStr = new Date().toISOString().split('T')[0];
-    
-    // 從 localStorage 讀取紀錄
-    const storedTotal = localStorage.getItem('site_total_visits');
-    const storedDate = localStorage.getItem('site_last_visit_date');
-    const storedToday = localStorage.getItem('site_today_visits');
-
-    // 預設值 (若無紀錄則從 783/3 開始)
-    let newTotal = storedTotal ? parseInt(storedTotal) : 783;
-    let newToday = 3;
-
-    // 判斷是否過了一天
-    if (storedDate === todayStr && storedToday) {
-      newToday = parseInt(storedToday) + 1; // 同一天，今日人數+1
-    } else {
-      newToday = 1; // 不同天，今日重置為1
-    }
-    
-    newTotal += 1; // 總人數永遠+1
-
-    // 更新畫面與儲存
-    setCounts({ total: newTotal, today: newToday });
-    localStorage.setItem('site_total_visits', newTotal.toString());
-    localStorage.setItem('site_last_visit_date', todayStr);
-    localStorage.setItem('site_today_visits', newToday.toString());
-  }, []);
-
-  return (
-    <div className="flex items-center justify-center gap-3 mt-8 mb-4 animate-fade-in-up">
-      {/* 項目一：累積訪客人數 */}
-      <div className="bg-[#a8a29e] text-white px-3 py-1.5 rounded-md text-xs font-medium shadow-sm flex items-center gap-2">
-        <span>累積訪客人數</span>
-        <span className="bg-white/20 px-1.5 rounded text-white font-bold">
-          {counts.total.toLocaleString()}
-        </span>
-      </div>
-
-      {/* 項目二：今日訪客人數 */}
-      <div className="bg-[#a8a29e] text-white px-3 py-1.5 rounded-md text-xs font-medium shadow-sm flex items-center gap-2">
-        <span>今日訪客人數</span>
-        <span className="bg-white/20 px-1.5 rounded text-white font-bold">
-          {counts.today.toLocaleString()}
-        </span>
-      </div>
-    </div>
   );
 };
 
@@ -1478,14 +1435,7 @@ const FinancialDefensePage = () => {
       </section>
 
       <footer className="bg-white border-t border-gray-100 py-8">
-         <div className="container mx-auto px-6 text-center text-sm text-gray-500">
-           
-           {/* 插入計數器 */}
-           <VisitorCounter />
-
-           <p className="mb-2">本網站內容僅供保險觀念推廣與教育用途，詳細商品內容與理賠條件請以各保險公司正式保單條款為準。</p>
-           <p>Financial Defense Blueprint · Designed for Insurance Professionals</p>
-         </div>
+         <div className="container mx-auto px-6 text-center text-sm text-gray-500"><p className="mb-2">本網站內容僅供保險觀念推廣與教育用途，詳細商品內容與理賠條件請以各保險公司正式保單條款為準。</p><p>Financial Defense Blueprint · Designed for Insurance Professionals</p></div>
       </footer>
 
       {showContactModal && (
