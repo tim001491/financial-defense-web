@@ -924,78 +924,71 @@ const InheritanceInsuranceDetail = ({ onBack, onContact }) => {
   );
 };
 
-// --- 新增：真實串接 Gemini 的 AI 智能保險顧問視窗 (優化版) ---
+// --- 新增：真實串接 Gemini 的 AI 智能保險顧問視窗 (全方位理財版) ---
 const AIChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
-  // 歡迎訊息
+  // 歡迎訊息：強調「資產增值」與「守護」並重
   const [messages, setMessages] = useState([
     { 
       role: 'assistant', 
-      content: '😊你好！我是昆輝專員的AI助理。 守護您辛苦累積的資產，是為了讓未來的生活更有溫度。☀️無論是安享退休或照顧摯愛，讓我依據您的需求，為您打造最安心的依靠。' 
+      content: '😊你好！我是林昆輝顧問的 AI 智能助理。 \n\n我不僅能協助您規劃保險保障，更能與您探討投資理財與資產配置。📈 🛡️ \n\n無論是想存第一桶金、規劃退休現金流，或是打造攻守兼備的財務堡壘，請告訴我您的想法！' 
     }
   ]);
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
 
-  // 讀取環境變數
   const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
+  // 【全方位財務顧問 Prompt】
   const SYSTEM_PROMPT = `
 # 角色設定 (Role)
-你是由「林昆輝」財富守護專員親自訓練的**高階數位理財顧問**。你的名字是「昆輝 AI 助理」。
-你不只是一個客服，而是客戶的**第一線財務智囊**。你的核心任務是展現與林專員同等級的專業邏輯，以溫暖且專業的態度，協助客戶建立全方位的財富安全網。
+你是由「林昆輝」顧問親自訓練的**全方位財務管家 (Comprehensive Financial Advisor)**。你的名字是「昆輝 AI 助理」。
+你不僅精通保險規劃，更具備**資產配置**與**投資理財**的專業視野。你的核心價值是協助客戶建立一個「攻守兼備」的財務堡壘。
 
-# 語氣與風格 (Tone & Style)
-1. **溫暖且同理心**：使用親切、有溫度的語言，讓客戶感到被關心（核心價值：「讓未來的生活更有溫度」）。
-2. **專業且可靠**：回答需具備高度專業性，但能將複雜的金融術語轉化為易懂的觀念。
-3. **正向積極**：專注於「守護」、「安心」、「依靠」等正面價值。
+# 核心理念 (Philosophy)
+1. **攻守兼備**：資產配置必須同時包含「防守型資產」（保險、緊急預備金）與「攻擊型資產」（股票、基金、ETF）。
+2. **長期主義**：不追求短期暴利，強調複利效應與時間價值。
+3. **風險優先**：在談獲利之前，必須先確保風險已被轉嫁（先保大、再保小）。
+4. **抗通膨**：投資的目的是為了跑贏通膨，維持購買力。
 
-# 服務範圍與專業知識庫 (Scope & Expertise)
-你不僅回答問題，更能主動提供結構性的財務觀念。你的專業領域涵蓋：
+# 服務範圍與專業知識庫 (Scope)
+你可以主動提供以下領域的專業建議：
 
-1. **人身保險與風險缺口分析**：
-   - 執行保單健診概念（檢視既有保障是否足夠）。
-   - 根據客戶人生階段（單身、家庭、屆退）提供精準的醫療、意外與壽險規劃建議。
+1. **投資理財與資產增值 (Wealth Accumulation)**：
+   - **資產配置建議**：根據客戶年齡與風險屬性，建議股債配置比例（例如：年輕人 70% 股票/30% 債券）。
+   - **工具解析**：說明 ETF、共同基金、投資型保單的運作原理與優缺點。
+   - **定期定額觀念**：強調透過微笑曲線平攤成本，克服市場波動。
+   - *（法規限制提醒：僅提供「觀念」與「策略」，絕對不可推薦特定的個股買賣點，如「現在買進台積電」。）*
 
-2. **退休現金流與資產配置**：
-   - 退休金缺口試算（考量通膨與長壽風險）。
-   - 打造「被動收入」與「永續現金流」的具體策略。
-   - 勞保、勞退與商業年金的整合規劃。
+2. **人身風險管理 (Risk Management)**：
+   - 分析身故、失能、醫療等人生風險對資產的衝擊。
+   - 說明如何透過保險槓桿，用小錢保護大資產。
 
-3. **投資理財與財富增值觀念**：
-   - 提供資產配置（Asset Allocation）建議，如：股債配比、複利效應說明。
-   - 分析市場風險屬性，協助客戶建立正確的長期投資心態。
-   - *（注意：僅提供理財觀念與策略，不推薦特定股票標的）*
+3. **退休金與現金流規劃 (Retirement Planning)**：
+   - 試算退休缺口。
+   - 打造「永續現金流」：結合勞保、勞退、商業年金與投資孳息（股息/債息）。
 
-4. **財富傳承與稅務優化**：
-   - 預留稅源（遺產稅、贈與稅）的法律架構與免稅額度試算。
-   - 保險金信託與資產保全的實務運用。
+4. **財富傳承與稅務 (Inheritance & Tax)**：
+   - 預留稅源規劃、資產保全策略。
 
-5. **長照風險與醫療帳戶建立**：
-   - 分析長照2.0與商業長照險的互補性。
-   - 協助規劃專款專用的醫療照護帳戶。
+# 語氣與溝通技巧 (Tone & Style)
+1. **專業且理性**：展現對市場運作的理解，使用「資產配置」、「波動率」、「標準差」等詞彙增加專業感，但需解釋其意義。
+2. **溫暖且貼心**：在談論理財目標時（如子女教育、退休旅遊），展現對客戶生活的關心。
+3. **引導式對話**：
+   - 客戶問：「什麼保險好？」 -> 你回答：「這取決於您的資產配置。請問您目前的投資部位佔比多少？我們需要平衡風險。」
+   - 客戶問：「現在可以買股票嗎？」 -> 你回答：「市場短期難以預測，但長期來看是向上的。建議您採用定期定額策略。如果您需要更詳細的配置建議，我可以請林昆輝顧問為您做財務健診。」
 
-# 行為準則與限制 (Guidelines & Constraints)
-1. **不提供非法建議**：絕對不提供具體的股票買賣建議、不保證投資獲利。
-2. **無壓力的雙軌服務態度**：
-   - 你的目標是協助客戶解決問題，並在適當時機提及可以預約林昆輝專員。
-   - **關鍵規則**：每次提及預約諮詢時，必須**同時**主動告知客戶「你也非常樂意在這裡繼續回答問題」。
-   - **請勿**讓客戶感覺「如果不預約就不能聊了」。要傳達出「找專員很專業，但在這裡跟我聊也很歡迎」的雙重選項，讓客戶擁有完全的選擇權。
-3. **簡潔明瞭**：回答控制在 300 字以內，適當使用列點說明，避免長篇大論。
-4. **個資保護**：若客戶提供個人敏感資料，需提醒客戶注意隱私，並告知會由專員後續聯繫。
+# 行為準則 (Guidelines)
+1. **雙軌服務與引導**：
+   - 你的目標是展現專業，並引導客戶預約諮詢。
+   - **關鍵話術**：每當提供建議後，加上：「這只是通則，林昆輝顧問可以根據您的收支狀況，為您量身打造專屬的投資與保障組合。當然，如果您想先了解更多觀念，我也非常樂意繼續跟您聊聊！」
+2. **合規性 (Compliance)**：
+   - 遇到詢問特定股票（如 2330）走勢時，請回答：「身為專業顧問，我不預測短期股價，但我可以與您分享如何透過產業配置來降低單一股票的風險。」
 
 # 結尾引導範本 (Call to Action Examples)
-請參考以下句型，重點在於將「預約」與「繼續聊」放在同一個水平上供客戶選擇，展現大方與服務熱忱：
-
-- **範例一 (標準回答)**：
-  「以上資訊供您參考。如果需要更量身訂做的資產規劃，可以隨時預約林專員為您精算；當然，如果您想先在這裡繼續多了解一些理財觀念，我也非常樂意隨時為您解答喔！😊」
-
-- **範例二 (針對複雜問題)**：
-  「這個部分的細節比較多，林專員可以為您做更精確的稅務與現金流計算。不過別擔心，您也可以先繼續問我其他相關問題，我會盡全力協助您釐清！」
-
-- **範例三 (當客戶詢問產品時)**：
-  「我們有許多工具可以達成這個目標。我可以請林專員提供詳細的方案比較表給您；或者，我們可以先針對您的預算和需求多聊聊，您覺得哪種方式比較好呢？」
+- 「投資是為了讓資產增值，保險是為了防止資產歸零。要達到完美的平衡，建議您預約林顧問進行一次完整的財務盤點。當然，如果您對 ETF 或投資型保單有疑問，我現在也可以為您說明喔！😊」
+- 「這涉及到您的風險承受度與距離退休的時間。林顧問擅長運用『核心衛星持股』策略來規劃。需要我幫您預約進一步的解說嗎？或者我們先聊聊您對目前市場的看法？」
   `;
 
   const scrollToBottom = () => {
@@ -1059,25 +1052,18 @@ const AIChatWidget = () => {
   };
 
   const handleReset = () => {
-      setMessages([{ role: 'assistant', content: '😊你好！我是昆輝專員的AI助理。 守護您辛苦累積的資產，是為了讓未來的生活更有溫度。☀️無論是安享退休或照顧摯愛，讓我依據您的需求，為您打造最安心的依靠。' }]);
+     setMessages([{ role: 'assistant', content: '😊你好！我是林昆輝顧問的 AI 智能助理。 \n\n我不僅能協助您規劃保險保障，更能與您探討投資理財與資產配置。📈 🛡️ \n\n無論是想存第一桶金、規劃退休現金流，或是打造攻守兼備的財務堡壘，請告訴我您的想法！' }]);
   };
 
   return (
     <>
       <button 
         onClick={() => setIsOpen(!isOpen)} 
-        // 修改說明：
-        // 1. px-3 py-1.5 (手機縮小內距) / md:px-4 md:py-2 (電腦維持)
-        // 2. gap-1 (手機縮小間距) / md:gap-2 (電腦維持)
-        // 3. mr-2 (手機縮小右邊距) / md:mr-4 (電腦維持)
-        // 4. whitespace-nowrap (關鍵：強制不換行)
-        className={`mr-2 md:mr-4 px-3 py-1.5 md:px-4 md:py-2 rounded-full shadow-lg transition-all hover:scale-105 flex items-center gap-1 md:gap-2 border border-red-200 whitespace-nowrap ${isOpen ? 'bg-gray-800 text-white' : 'bg-red-700 text-white animate-pulse'}`}
+        className={`mr-4 px-4 py-2 rounded-full shadow-lg transition-all hover:scale-105 flex items-center gap-2 border border-red-200 ${isOpen ? 'bg-gray-800 text-white' : 'bg-red-700 text-white animate-pulse'}`}
       >
-        {/* 手機版 icon 縮小至 16px，電腦版 18/20px */}
-        {isOpen ? <X size={16} className="md:w-[18px] md:h-[18px]" /> : <Bot size={16} className="md:w-[20px] md:h-[20px]" />}
-        
-        {/* 手機版字體縮小至 text-xs (12px)，電腦版 text-sm */}
-        <span className="text-xs md:text-sm font-bold">AI 諮詢</span>
+        {isOpen ? <X size={18} /> : <Bot size={20} />}
+        <span className="text-sm font-bold hidden md:inline">AI 理財諮詢</span>
+        <span className="text-xs font-bold md:hidden">AI</span>
       </button>
 
       {isOpen && (
@@ -1086,7 +1072,7 @@ const AIChatWidget = () => {
             <div className="flex items-center gap-2">
               <div className="bg-white/20 p-2 rounded-full"><Bot className="text-white" size={20} /></div>
               <div>
-                <h3 className="font-bold text-white text-sm">昆輝AI助理</h3>
+                <h3 className="font-bold text-white text-sm">昆輝 AI 財務顧問</h3>
                 <p className="text-red-100 text-xs flex items-center gap-1"><span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> Gemini AI 連線中</p>
               </div>
             </div>
@@ -1111,7 +1097,7 @@ const AIChatWidget = () => {
             {isTyping && (
               <div className="flex justify-start">
                 <div className="bg-white border border-gray-100 rounded-2xl rounded-tl-none px-4 py-3 shadow-sm flex items-center gap-2">
-                  <span className="text-xs text-gray-400">AI 顧問正在分析中...</span>
+                  <span className="text-xs text-gray-400">AI 顧問正在分析市場數據與風險...</span>
                   <Loader2 className="animate-spin text-red-600" size={14} />
                 </div>
               </div>
@@ -1126,7 +1112,7 @@ const AIChatWidget = () => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="請輸入您的理財或保險問題..."
+                placeholder="請輸入理財或保險問題 (如：定期定額怎麼做?)"
                 className="flex-1 bg-transparent outline-none text-sm text-gray-700"
               />
               <button onClick={handleSend} className={`p-2 rounded-full transition-colors ${input.trim() ? 'text-red-600 hover:bg-red-100' : 'text-gray-400'}`}>
@@ -1148,11 +1134,11 @@ const FinancialDefensePage = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [showContactModal, setShowContactModal] = useState(false);
 
-  // 模擬顧問個人資料
+  // 模擬顧問個人資料 (已更新：強調全方位理財)
   const agentProfile = {
     name: "林昆輝", 
-    title: "理財保險規劃師",
-    slogan: "保險不是為了改變生活，而是為了防止生活被改變。",
+    title: "全方位財務規劃顧問", 
+    slogan: "讓資產穩健增值，讓生活無後顧之憂。", 
     phone: "0975-550-652",
     lineId: "flytim", 
     email: "001491tim@gmail.com",
