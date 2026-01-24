@@ -1224,7 +1224,7 @@ const FinancialDefensePage = () => {
     phone: "0975-550-652",
     lineId: "flytim", 
     email: "001491tim@gmail.com",
-    location: ""
+    
   };
 
   // 保險資料結構
